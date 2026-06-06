@@ -116,10 +116,34 @@ export default function CheckoutPage() {
     return Object.keys(e).length === 0;
   };
 
-  const placeOrder = () => {
+  const placeOrder = async () => {
     const id = 'ORD-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
     setOrderId(id);
     setOrderDone(true);
+    
+    // Save order to Supabase if user is logged in
+    try {
+      const { supabase } = await import('@/lib/supabase');
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.user) {
+        await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: session.user.id,
+            items,
+            shipping,
+            payment_method: payment.method,
+            subtotal: total,
+            discount,
+            shipping_charge: shippingCost,
+            total: grandTotal,
+            coupon_code: couponApplied ? couponCode : null,
+          }),
+        });
+      }
+    } catch (e) { console.log('Order save skipped:', e.message); }
+    
     localStorage.removeItem('cart');
     window.dispatchEvent(new Event('cart-update'));
   };

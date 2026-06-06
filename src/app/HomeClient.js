@@ -192,7 +192,10 @@ export default function HomePage() {
             {subscribed ? (
               <p className="mt-4 text-green-600 font-semibold">✓ You're on the list!</p>
             ) : (
-              <form onSubmit={e => { e.preventDefault(); setSubscribed(true); }} className="mt-4 flex gap-2 max-w-sm mx-auto">
+              <form onSubmit={async e => { e.preventDefault(); 
+                await fetch('/api/subscribe', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email, name: '' }) });
+                setSubscribed(true); 
+              }} className="mt-4 flex gap-2 max-w-sm mx-auto">
                 <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
