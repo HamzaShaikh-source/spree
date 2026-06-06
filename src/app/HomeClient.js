@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
+import ShareButton from '@/components/ShareButton';
+import ImageSearch from '@/components/ImageSearch';
 import products, { getFeaturedProducts, getCategories, formatPrice, getPersonalizedRecommendations } from '@/data/products';
 
 export default function HomePage() {
@@ -45,6 +47,7 @@ export default function HomePage() {
                 <Link href="#trending" className="border border-white/30 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/10 transition">
                   Trending →
                 </Link>
+                <ShareButton title="Spree - Discover What You Love" dark />
               </div>
             </div>
             <div className="hidden md:grid grid-cols-2 gap-3">
@@ -90,6 +93,17 @@ export default function HomePage() {
             </span>
           </div>
         </Link>
+      </section>
+
+      {/* ── Image Search ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-6 border border-indigo-100">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-lg">📸</span>
+            <h2 className="text-lg font-bold text-gray-900">Search by Image</h2>
+          </div>
+          <ImageSearch compact />
+        </div>
       </section>
 
       {/* ── FEATURED ── */}
