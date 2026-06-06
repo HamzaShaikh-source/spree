@@ -100,14 +100,14 @@ export default function Header() {
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   placeholder={t('search')}
-                  className="w-full pl-8 pr-16 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition"
+                  className="w-full pl-8 pr-14 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition"
                 />
                 <svg className="absolute left-2.5 top-2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <button type="button" onClick={startVoiceSearch}
-                  className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full transition ${
-                    listening ? 'bg-red-500 text-white' : 'text-gray-400 hover:text-indigo-600 hover:bg-gray-200'
+                  className={`absolute right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-full transition ${
+                    listening ? 'bg-red-500 text-white shadow' : 'text-gray-400 hover:text-indigo-600 bg-gray-200 hover:bg-gray-300'
                   }`}
                   title={t('searchVoice')}
                 >

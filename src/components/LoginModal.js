@@ -37,10 +37,10 @@ export default function LoginModal({ isOpen, onClose }) {
         {user ? (
           <div className="text-center">
             <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto text-2xl">
-              {user.email?.charAt(0).toUpperCase() || '👤'}
+              {user?.email?.charAt(0)?.toUpperCase() || '👤'}
             </div>
-            <h3 className="font-bold text-gray-900 mt-2">{user.user_metadata?.full_name || user.email}</h3>
-            <p className="text-xs text-gray-400">{user.email}</p>
+            <h3 className="font-bold text-gray-900 mt-2">{user?.user_metadata?.full_name || user?.email || 'User'}</h3>
+            <p className="text-xs text-gray-400">{user?.email}</p>
             <a href="/orders" className="mt-3 block text-sm text-indigo-600 font-semibold hover:underline" onClick={onClose}>
               📦 View My Orders
             </a>
