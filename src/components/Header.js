@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getCategories } from '@/data/products';
 import { useLanguage } from '@/context/LanguageContext';
 import LoginModal from './LoginModal';
+import SearchSuggestions from './SearchSuggestions';
 import { supabase } from '@/lib/supabase';
 
 export default function Header() {
@@ -116,6 +117,18 @@ export default function Header() {
                   </svg>
                 </button>
               </div>
+              <SearchSuggestions 
+                query={searchQuery} 
+                onSearch={(term) => setSearchQuery(term)}
+                onSubmit={() => {
+                  if (searchQuery.trim()) {
+                    const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+                    const updated = [searchQuery.trim(), ...history.filter(h => h !== searchQuery.trim())].slice(0, 8);
+                    localStorage.setItem('searchHistory', JSON.stringify(updated));
+                    window.location.href = `/products?search=${encodeURIComponent(searchQuery.trim())}`;
+                  }
+                }}
+              />
             </form>
 
             {/* Desktop Nav */}

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
-import products, { getFeaturedProducts, getCategories, formatPrice, getBrands } from '@/data/products';
+import products, { getFeaturedProducts, getCategories, formatPrice, getPersonalizedRecommendations } from '@/data/products';
 
 export default function HomePage() {
   const featured = getFeaturedProducts().slice(0, 6);
@@ -12,20 +12,13 @@ export default function HomePage() {
   const [subscribed, setSubscribed] = useState(false);
   const [recommended, setRecommended] = useState([]);
   const [trending, setTrending] = useState([]);
+  const [personalized, setPersonalized] = useState([]);
+  const [searchHistory, setSearchHistory] = useState([]);
 
   useEffect(() => {
     const viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-    const tagScores = {};
-    products.filter(p => viewed.includes(p.id)).forEach(p =>
-      p.tags.forEach(t => { tagScores[t] = (tagScores[t] || 0) + 1; })
-    );
-    if (viewed.length > 0) {
-      setRecommended(
-        products.filter(p => !viewed.includes(p.id))
-          .map(p => ({ ...p, _score: p.tags.reduce((s, t) => s + (tagScores[t] || 0), 0) }))
-          .sort((a, b) => b._score - a._score).slice(0, 5)
-      );
-    }
+    setPersonalized(getPersonalizedRecommendations(6));
+    setSearchHistory(JSON.parse(localStorage.getItem('searchHistory') || '[]'));
     setTrending([...products].sort((a, b) => b.reviews - a.reviews).slice(0, 5));
   }, []);
 
@@ -126,6 +119,22 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* ── PERSONALIZED RECOMMENDATIONS ── */}
+      {personalized.length > 0 && (
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+          <div className="flex items-center gap-2 mb-5">
+            <span className="text-lg">🎯</span>
+            <h2 className="text-xl font-bold text-gray-900">Based on Your Activity</h2>
+            <span className="text-[10px] bg-indigo-100 text-indigo-600 font-bold px-2 py-0.5 rounded-full">Personalized</span>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {personalized.map((p, i) => (
+              <ProductCard key={p.id} product={p} priority={i < 2} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── TOP BRANDS ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">

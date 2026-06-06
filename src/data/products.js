@@ -3881,6 +3881,45 @@ export function getRelatedProducts(product, limit = 4) {
     .slice(0, limit);
 }
 
+export function getPersonalizedRecommendations(limit = 8) {
+  // Combine data from multiple sources for better personalization
+  const viewedIds = JSON.parse(localStorage?.getItem('recentlyViewed') || '[]');
+  const searchHistory = JSON.parse(localStorage?.getItem('searchHistory') || '[]');
+  const orders = JSON.parse(localStorage?.getItem('spree-orders') || '[]');
+  
+  const tagScores = {};
+  
+  // Score from viewed products
+  products.filter(p => viewedIds.includes(p.id)).forEach(p =>
+    p.tags.forEach(t => { tagScores[t] = (tagScores[t] || 0) + 2; })
+  );
+  
+  // Score from search history (matches product names/tags/categories)
+  searchHistory.forEach(term => {
+    const q = term.toLowerCase();
+    products.forEach(p => {
+      if (p.name.toLowerCase().includes(q)) tagScores[p.category] = (tagScores[p.category] || 0) + 1;
+      p.tags.forEach(t => { if (t.includes(q)) tagScores[t] = (tagScores[t] || 0) + 1; });
+    });
+  });
+  
+  // Score from previously ordered items
+  orders.forEach(order => {
+    (order.items || []).forEach(item => {
+      const p = products.find(pr => pr.id === item.id);
+      if (p) p.tags.forEach(t => { tagScores[t] = (tagScores[t] || 0) + 3; });
+    });
+  });
+
+  if (Object.keys(tagScores).length === 0) return getFeaturedProducts().slice(0, limit);
+  
+  return products
+    .filter(p => !viewedIds.includes(p.id))
+    .map(p => ({ ...p, _score: p.tags.reduce((sum, t) => sum + (tagScores[t] || 0), 0) }))
+    .sort((a, b) => b._score - a._score)
+    .slice(0, limit);
+}
+
 export function getRecommendations(viewedIds = [], limit = 6) {
   const viewedProducts = products.filter(p => viewedIds.includes(p.id));
   const tagScores = {};
