@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { formatPrice } from '@/data/products';
-import { supabase } from '@/lib/supabase';
 
 const STEPS = ['Cart', 'Shipping', 'Payment', 'Confirm'];
 
@@ -122,34 +121,54 @@ export default function CheckoutPage() {
     setOrderId(id);
     setOrderDone(true);
     
-    // Save order to Supabase if user is logged in
+    // Save order to Supabase via API
     try {
-      const { supabase: sb } = await import('@/lib/supabase');
-      if (!sb?.auth) throw new Error('Auth unavailable');
-      const { data: { session } } = await sb.auth.getSession();
-      if (session?.user) {
-        // Save user_id for orders page to use
-        localStorage.setItem('spree-session', JSON.stringify({ user_id: session.user.id, email: session.user.email }));
-        
-        await fetch('/api/orders', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            user_id: session.user.id,
-            user_email: session.user.email,
-            user_name: session.user.user_metadata?.full_name || '',
-            items,
-            shipping,
-            payment_method: payment.method,
-            subtotal: total,
-            discount,
-            shipping_charge: shippingCost,
-            total: grandTotal,
-            coupon_code: couponApplied ? couponCode : null,
-          }),
-        });
+      const orderData = {
+        user_id: 'guest-' + Date.now(),
+        user_email: shipping.email || 'guest@spree.com',
+        user_name: shipping.name || 'Guest',
+        items,
+        shipping,
+        payment_method: payment.method,
+        subtotal: total,
+        discount,
+        shipping_charge: shippingCost,
+        total: grandTotal,
+        coupon_code: couponApplied ? couponCode : null,
+      };
+      
+      // Try to get user from supabase if available
+      try {
+        const mod = await import('@/lib/supabase');
+        if (mod.supabase?.auth) {
+          const { data: { session } } = await mod.supabase.auth.getSession();
+          if (session?.user) {
+            orderData.user_id = session.user.id;
+            orderData.user_email = session.user.email;
+            orderData.user_name = session.user.user_metadata?.full_name || shipping.name;
+            // Save for orders page
+            localStorage.setItem('spree-session', JSON.stringify({ 
+              user_id: session.user.id, 
+              email: session.user.email 
+            }));
+          }
+        }
+      } catch(e) {}
+      
+      await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData),
+      });
+      
+      // Also save user_id from checkout for orders page
+      if (!localStorage.getItem('spree-session')) {
+        localStorage.setItem('spree-session', JSON.stringify({ 
+          user_id: orderData.user_id, 
+          email: orderData.user_email 
+        }));
       }
-    } catch (e) { console.log('Order save skipped:', e.message); }
+    } catch (e) { console.log('Order save:', e.message); }
     
     localStorage.removeItem('cart');
     window.dispatchEvent(new Event('cart-update'));
