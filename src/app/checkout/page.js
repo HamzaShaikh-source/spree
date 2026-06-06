@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { formatPrice } from '@/data/products';
+import { supabase } from '@/lib/supabase';
 
 const STEPS = ['Cart', 'Shipping', 'Payment', 'Confirm'];
 
@@ -123,7 +124,6 @@ export default function CheckoutPage() {
     
     // Save order to Supabase if user is logged in
     try {
-      const { supabase } = await import('@/lib/supabase');
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         await fetch('/api/orders', {
