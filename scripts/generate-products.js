@@ -149,11 +149,32 @@ const BRAND_LOGOS = {
   'Levi\'s': 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Levi%27s_logo.svg',
 };
 
-// ── Product Images ──
-// Using picsum.photos — always returns working images, infinite variety
-// Seed = product slug ensures each product always shows the same image
-function getProductImage(slug) {
-  return `https://picsum.photos/seed/${slug}/400/400`;
+// ── Real product photos (all verified working — actual e-commerce product shots) ──
+const PRODUCT_PHOTOS = [
+  'photo-1505740420928-5e560c06d30e', 'photo-1523275335684-37898b6baf30', 'photo-1608043152269-423dbba4e7e1',
+  'photo-1502920917128-1aa500764cbd', 'photo-1618384887929-16ec33fab9ef', 'photo-1622445275576-721325763afe',
+  'photo-1609091839311-d5365f9ff1c5', 'photo-1576995853123-5a10305d93c0', 'photo-1596755094514-f87e34085b2c',
+  'photo-1548036328-c9fa89d128fa', 'photo-1601924994987-69e26d50dc26', 'photo-1624378439575-d8705ad7ae80',
+  'photo-1627123424574-724758594e93', 'photo-1553062407-98eeb64c6a62', 'photo-1602143407151-7111542de6e8',
+  'photo-1594226801341-41427b4e5c22', 'photo-1485955900006-10f4d324d411', 'photo-1526170375885-4d8ecf77b99f',
+  'photo-1491553895911-0055eca6402d', 'photo-1507003211169-0a1dd7228f2d', 'photo-1471295253337-3ceaaedca402',
+  'photo-1441986300917-64674bd600d8', 'photo-1483985988355-763728e1935b', 'photo-1508423134147-addf71308178',
+  'photo-1523381210434-271e8be1f52b', 'photo-1540959733332-eab4deabeeaf', 'photo-1552346154-21d32810aba3',
+  'photo-1560343090-f0409e92791a', 'photo-1572569511254-d8f925fe2cbb', 'photo-1572635196237-14b3f281503f',
+  'photo-1583394838336-acd977736f90', 'photo-1583743814966-8936f5b7be1a', 'photo-1598532163257-ae3c6b2524b6',
+  'photo-1600185365483-26d7a4cc7519', 'photo-1606107557195-0e29a4b5b4aa', 'photo-1608571423902-eed4a5ad8108',
+  'photo-1611930022073-b7a4ba5fcccd', 'photo-1620799140408-edc6dcb6d633', 'photo-1621607512214-68297480165e',
+  'photo-1598440947619-2c35fc9aa908', 'photo-1585314062340-f1a5a7c9328d', 'photo-1598289431512-b97b0917affc',
+  'photo-1556821840-3a63f95609a7', 'photo-1542291026-7eec264c27ff', 'photo-1604654894610-df63bc536371',
+  'photo-1631214524020-7e18db9a8f92', 'photo-1507003211169-0a1dd7228f2d', 'photo-1552346154-21d32810aba3',
+  'photo-1483985988355-763728e1935b', 'photo-1523381210434-271e8be1f52b',
+];
+
+let photoIndex = 0;
+function getNextPhoto() {
+  const photo = PRODUCT_PHOTOS[photoIndex % PRODUCT_PHOTOS.length];
+  photoIndex++;
+  return `https://images.unsplash.com/${photo}?w=400&h=400&fit=crop`;
 }
 
 // Shuffle function to randomize image assignment
@@ -203,7 +224,7 @@ for (const [catName, catData] of Object.entries(CATEGORIES)) {
       rating: Math.min(5, rating),
       reviews,
       featured: Math.random() > 0.85,
-      image: getProductImage(slugify(fullName)),
+      image: getNextPhoto(),
       description: `High-quality ${type.name.toLowerCase()} from ${brand}. Perfect for everyday use with premium features and reliable performance.`,
       inStock: Math.random() > 0.15,
     };
@@ -231,7 +252,7 @@ for (const [catName, catData] of Object.entries(CATEGORIES)) {
         rating: Math.min(5, Math.round((3.0 + Math.random() * 2.0) * 10) / 10),
         reviews: Math.floor(10 + Math.random() * 1500),
         featured: Math.random() > 0.92,
-        image: getProductImage(slugify(nameV + '-' + brandV)),
+        image: getNextPhoto(),
         description: `Premium ${type.name.toLowerCase()} from ${brandV}. Features cutting-edge technology and superior build quality.`,
         inStock: Math.random() > 0.12,
       });
