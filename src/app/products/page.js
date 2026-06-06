@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
 import products, { getCategories, getPriceRange, formatPrice } from '@/data/products';
 import Link from 'next/link';
+import { Search, Mic } from 'lucide-react';
 
 export default function ProductsPage() {
   const categories = getCategories();
@@ -15,6 +16,23 @@ export default function ProductsPage() {
   const [priceMax, setPriceMax] = useState(priceRange.max);
   const [minRating, setMinRating] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [voiceListening, setVoiceListening] = useState(false);
+
+  const startVoiceSearch = () => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) return;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-IN';
+    recognition.interimResults = false;
+    recognition.onresult = (event) => {
+      setSearchQuery(event.results[0][0].transcript);
+      setVoiceListening(false);
+    };
+    recognition.onerror = () => setVoiceListening(false);
+    recognition.onend = () => setVoiceListening(false);
+    recognition.start();
+    setVoiceListening(true);
+  };
 
   // Read URL params on mount
   useEffect(() => {
@@ -96,8 +114,18 @@ export default function ProductsPage() {
         {/* Sidebar */}
         <aside className="md:w-56 shrink-0">
           <div className="mb-4">
-            <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search..." className="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+            <div className="relative">
+              <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search..." 
+                className="w-full pl-8 pr-10 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <button type="button" onClick={startVoiceSearch}
+                className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-1 rounded-full transition ${
+                  voiceListening ? 'bg-red-500 text-white' : 'text-gray-400 hover:text-indigo-600'
+                }`}>
+                <Mic className="w-4 h-4" />
+              </button>
+            </div>
           </div>
           <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-2">Category</h3>
           <div className="space-y-0.5 mb-5">
