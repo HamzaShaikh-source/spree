@@ -163,11 +163,14 @@ export default function CheckoutPage() {
       
       // Also save user_id from checkout for orders page
       if (!localStorage.getItem('spree-session')) {
+        const guestId = 'guest-' + Date.now();
         localStorage.setItem('spree-session', JSON.stringify({ 
-          user_id: orderData.user_id, 
+          user_id: orderData.user_id.startsWith('guest-') ? guestId : orderData.user_id, 
           email: orderData.user_email 
         }));
       }
+      // Always save last user id for order lookup
+      localStorage.setItem('spree-last-user-id', orderData.user_id);
     } catch (e) { console.log('Order save:', e.message); }
     
     localStorage.removeItem('cart');
