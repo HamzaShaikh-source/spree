@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
-import products, { getFeaturedProducts, getCategories, formatPrice } from '@/data/products';
+import products, { getFeaturedProducts, getCategories, formatPrice, getBrands } from '@/data/products';
 
 export default function HomePage() {
   const featured = getFeaturedProducts().slice(0, 6);
@@ -125,6 +125,45 @@ export default function HomePage() {
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
+      </section>
+
+      {/* ── TOP BRANDS ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <div className="flex items-center gap-2 mb-5">
+          <span className="text-lg">🏷️</span>
+          <h2 className="text-xl font-bold text-gray-900">Top Brands</h2>
+        </div>
+        <div className="flex gap-4 overflow-x-auto pb-3 -mx-4 px-4 snap-x">
+          {['Apple', 'Samsung', 'Sony', 'Nike', 'Adidas', 'Dell', 'HP', 'Lenovo', 'ASUS', 'Bose', 'Puma', "Levi's"].map(brand => (
+            <Link key={brand} href={`/products?search=${encodeURIComponent(brand)}`}
+              className="snap-start shrink-0 bg-white border border-gray-200 rounded-xl px-6 py-4 flex items-center gap-3 hover:shadow-md hover:border-indigo-200 transition min-w-[140px]">
+              <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-gray-600">
+                {brand.charAt(0)}
+              </div>
+              <div>
+                <p className="font-semibold text-gray-900 text-sm">{brand}</p>
+                <p className="text-[10px] text-gray-400">Explore →</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── EXPRESS / 10-MIN ORDER ── */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+        <Link href="/products" className="block bg-gradient-to-r from-green-600 to-emerald-700 rounded-2xl p-6 md:p-8 text-white overflow-hidden relative">
+          <div className="flex items-center gap-4">
+            <span className="text-4xl">⚡</span>
+            <div>
+              <span className="text-emerald-200 text-xs font-bold tracking-widest uppercase">Express</span>
+              <h2 className="text-2xl md:text-3xl font-extrabold mt-0.5">10-Minute Order</h2>
+              <p className="text-emerald-100 text-sm mt-1 max-w-md">Quick checkout for returning customers. Select, pay, and done — under 10 minutes.</p>
+              <span className="inline-block mt-3 bg-white text-emerald-700 font-bold px-5 py-2 rounded-full text-sm hover:bg-emerald-50 transition">
+                Shop Now →
+              </span>
+            </div>
+          </div>
+        </Link>
       </section>
 
       {/* ── PERSONALIZED (was "AI Recommendations") ── */}

@@ -17,6 +17,37 @@ export default function CheckoutPage() {
 
   // Form state
   const [shipping, setShipping] = useState({ name: '', email: '', phone: '', address: '', city: '', pincode: '' });
+  const [pinSuggest, setPinSuggest] = useState([]);
+  const [pinFocused, setPinFocused] = useState(false);
+
+  const INDIAN_PINCODES = {
+    '110001': 'New Delhi, Delhi', '110002': 'New Delhi, Delhi', '400001': 'Mumbai, Maharashtra',
+    '400002': 'Mumbai, Maharashtra', '700001': 'Kolkata, West Bengal', '600001': 'Chennai, Tamil Nadu',
+    '560001': 'Bengaluru, Karnataka', '560002': 'Bengaluru, Karnataka', '500001': 'Hyderabad, Telangana',
+    '380001': 'Ahmedabad, Gujarat', '380002': 'Ahmedabad, Gujarat', '411001': 'Pune, Maharashtra',
+    '302001': 'Jaipur, Rajasthan', '226001': 'Lucknow, Uttar Pradesh', '682001': 'Kochi, Kerala',
+    '452001': 'Indore, Madhya Pradesh', '462001': 'Bhopal, Madhya Pradesh', '160001': 'Chandigarh',
+    '800001': 'Patna, Bihar', '751001': 'Bhubaneswar, Odisha', '248001': 'Dehradun, Uttarakhand',
+    '834001': 'Ranchi, Jharkhand', '140001': 'Ludhiana, Punjab', '530001': 'Visakhapatnam, Andhra Pradesh',
+  };
+
+  const handlePincodeChange = (val) => {
+    updateField(shipping, setShipping, 'pincode', val);
+    if (val.length >= 5) {
+      const matches = Object.entries(INDIAN_PINCODES)
+        .filter(([code]) => code.startsWith(val))
+        .slice(0, 5);
+      setPinSuggest(matches);
+    } else {
+      setPinSuggest([]);
+    }
+  };
+
+  const selectPincode = (code, location) => {
+    setShipping({ ...shipping, pincode: code, city: location.split(',')[0] });
+    setPinSuggest([]);
+    if (errors.pincode) setErrors({ ...errors, pincode: undefined });
+  };
   const [payment, setPayment] = useState({ method: 'cod', cardNumber: '', expiry: '', cvv: '' });
   const [errors, setErrors] = useState({});
   const [couponCode, setCouponCode] = useState('');
@@ -212,8 +243,23 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <label className="text-xs font-medium text-gray-600 block mb-1">Pincode</label>
-                    <input type="text" value={shipping.pincode} onChange={e => updateField(shipping, setShipping, 'pincode', e.target.value)}
-                      className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 ${errors.pincode ? 'border-red-300' : 'border-gray-200'}`} />
+                    <div className="relative">
+                      <input type="text" value={shipping.pincode} onChange={e => handlePincodeChange(e.target.value)}
+                        onFocus={() => setPinFocused(true)} onBlur={() => setTimeout(() => setPinFocused(false), 200)}
+                        placeholder="Enter pincode" maxLength={6}
+                        className={`w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 ${errors.pincode ? 'border-red-300' : 'border-gray-200'}`} />
+                      {pinSuggest.length > 0 && pinFocused && (
+                        <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg mt-1 z-10 max-h-40 overflow-y-auto">
+                          {pinSuggest.map(([code, loc]) => (
+                            <button key={code} type="button" onMouseDown={() => selectPincode(code, loc)}
+                              className="w-full text-left px-3 py-2 text-xs hover:bg-indigo-50 border-b border-gray-50 last:border-0">
+                              <span className="font-semibold text-gray-900">{code}</span>
+                              <span className="text-gray-500 ml-2">{loc}</span>
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                     {errors.pincode && <p className="text-xs text-red-500 mt-0.5">{errors.pincode}</p>}
                   </div>
                 </div>
