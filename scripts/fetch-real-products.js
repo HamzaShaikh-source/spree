@@ -52,10 +52,8 @@ async function fetchAllProducts() {
     total = data.total;
     allProducts.push(...data.products);
     skip += limit;
-    console.error(`Fetched ${allProducts.length}/${total} products...`);
   } while (skip < total);
 
-  console.error(`✅ Total: ${allProducts.length} products`);
   return allProducts;
 }
 
