@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { sendOrderConfirmation } from '@/lib/email';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_KEY;
@@ -35,6 +36,10 @@ export async function POST(req) {
     }).select().single();
 
     if (error) throw error;
+    
+    // Send confirmation email (non-blocking)
+    sendOrderConfirmation({ ...data, email: body.user_email });
+    
     return Response.json({ success: true, order: data });
   } catch (err) {
     console.error('Order save error:', err);
