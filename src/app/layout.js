@@ -15,54 +15,52 @@ export default function RootLayout({ children }) {
         <LanguageProvider>
           <Header />
           <main className="flex-1">{children}</main>
-          <footer className="bg-white border-t border-gray-200 py-10 mt-12">
+          <footer className="bg-white border-t border-gray-200 pt-12 pb-8 mt-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 text-xs">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-3 text-xs uppercase tracking-wider">Shop</h4>
-                  <ul className="space-y-1.5 text-gray-500">
-                    <li><FooterLink href="/products?category=Electronics">Electronics</FooterLink></li>
-                    <li><FooterLink href="/products?category=Fashion">Fashion</FooterLink></li>
-                    <li><FooterLink href="/products?category=Home+%26+Kitchen">Home & Kitchen</FooterLink></li>
-                    <li><FooterLink href="/products?category=Books+%26+Media">Books & Media</FooterLink></li>
-                    <li><FooterLink href="/products?category=Sports+%26+Outdoors">Sports & Outdoors</FooterLink></li>
-                    <li><FooterLink href="/products?category=Beauty">Beauty</FooterLink></li>
-                    <li><FooterLink href="/products?category=Laptops+%26+Computers">Laptops & Computers</FooterLink></li>
-                    <li><FooterLink href="/products?category=Stationery+%26+Office">Stationery & Office</FooterLink></li>
+                  <div className="flex items-center gap-1.5 mb-4">
+                    <span className="w-6 h-6 bg-gradient-to-br from-indigo-600 to-purple-600 rounded flex items-center justify-center text-white text-[10px] font-bold">S</span>
+                    <span className="font-bold text-sm text-gray-900">pree</span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">Discover what you love. Curated products across 8 categories with personalized recommendations.</p>
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-3">Shop</h4>
+                  <ul className="space-y-2">
+                    {['Electronics', 'Fashion', 'Home & Kitchen', 'Books & Media'].map(cat => (
+                      <li key={cat}><FooterLink href={`/products?category=${encodeURIComponent(cat)}`}>{cat}</FooterLink></li>
+                    ))}
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-3 text-xs uppercase tracking-wider">Help</h4>
-                  <ul className="space-y-1.5 text-gray-500">
+                  <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-3">Support</h4>
+                  <ul className="space-y-2">
                     <li><FooterLink href="/contact">Contact Us</FooterLink></li>
                     <li><FooterLink href="/shipping">Shipping Info</FooterLink></li>
-                    <li><FooterLink href="/returns">Returns & Exchanges</FooterLink></li>
+                    <li><FooterLink href="/returns">Returns</FooterLink></li>
                     <li><FooterLink href="/faq">FAQ</FooterLink></li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900 mb-3 text-xs uppercase tracking-wider">Company</h4>
-                  <ul className="space-y-1.5 text-gray-500">
+                  <h4 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-3">Company</h4>
+                  <ul className="space-y-2">
                     <li><FooterLink href="/about">About Us</FooterLink></li>
                     <li><FooterLink href="/careers">Careers</FooterLink></li>
                     <li><FooterLink href="/press">Press</FooterLink></li>
                     <li><FooterLink href="/blog">Blog</FooterLink></li>
                   </ul>
                 </div>
-                <div>
-                  <h4 className="font-bold text-gray-900 mb-3 text-xs uppercase tracking-wider">Connect</h4>
-                  <ul className="space-y-1.5 text-gray-500">
-                    <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition">📸 Instagram</a></li>
-                    <li><a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition">👍 Facebook</a></li>
-                    <li><a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition">🐦 X (Twitter)</a></li>
-                    <li><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition">📺 YouTube</a></li>
-                    <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition">💼 LinkedIn</a></li>
-                  </ul>
-                </div>
               </div>
-              <div className="border-t border-gray-100 pt-6 text-center text-[10px] text-gray-400 space-y-1">
-                <p className="font-semibold text-gray-600 mb-0.5">✨ Spree — Discover What You Love</p>
-                <p>© 2026 Spree. All rights reserved. Made with ❤️ in India.</p>
+              <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+                <p>© 2026 Spree. All rights reserved.</p>
+                <div className="flex items-center gap-4">
+                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">Instagram</a>
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">Facebook</a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">X</a>
+                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">YouTube</a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">LinkedIn</a>
+                </div>
               </div>
             </div>
           </footer>
@@ -74,7 +72,5 @@ export default function RootLayout({ children }) {
 }
 
 function FooterLink({ href, children }) {
-  return (
-    <a href={href} className="hover:text-gray-900 transition cursor-pointer">{children}</a>
-  );
+  return <a href={href} className="text-xs text-gray-500 hover:text-gray-900 transition">{children}</a>;
 }

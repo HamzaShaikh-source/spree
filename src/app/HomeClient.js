@@ -5,46 +5,51 @@ import { useState, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
 import ShareButton from '@/components/ShareButton';
 import products, { getFeaturedProducts, getCategories, formatPrice, getPersonalizedRecommendations } from '@/data/products';
+import { Sparkles, TrendingUp, Target, Tag, ArrowRight, Mail, ChevronRight } from 'lucide-react';
 
 export default function HomePage() {
   const featured = getFeaturedProducts().slice(0, 6);
   const categories = getCategories();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
-  const [recommended, setRecommended] = useState([]);
-  const [trending, setTrending] = useState([]);
   const [personalized, setPersonalized] = useState([]);
-  const [searchHistory, setSearchHistory] = useState([]);
+  const [trending, setTrending] = useState([]);
 
   useEffect(() => {
-    const viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
     setPersonalized(getPersonalizedRecommendations(6));
-    setSearchHistory(JSON.parse(localStorage.getItem('searchHistory') || '[]'));
     setTrending([...products].sort((a, b) => b.reviews - a.reviews).slice(0, 5));
   }, []);
+
+  const categoryIcons = {
+    'Electronics': '📱', 'Fashion': '👕', 'Home & Kitchen': '🏠',
+    'Books & Media': '📚', 'Sports & Outdoors': '🏃', 'Beauty': '💄',
+    'Laptops & Computers': '💻', 'Stationery & Office': '✏️',
+  };
 
   return (
     <div>
       {/* ── HERO ── */}
-      <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative">
           <div className="grid md:grid-cols-2 gap-10 items-center">
-            <div>
-              <span className="text-indigo-300 text-sm font-bold tracking-widest uppercase">New Season</span>
-              <h1 className="text-4xl md:text-5xl font-extrabold mt-3 leading-tight">
+            <div className="space-y-5">
+              <span className="inline-flex items-center gap-1.5 text-indigo-300 text-xs font-semibold tracking-widest uppercase bg-indigo-500/10 border border-indigo-500/20 rounded-full px-3 py-1">
+                <Sparkles className="w-3.5 h-3.5" /> New Season
+              </span>
+              <h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
                 Discover What<br />
-                <span className="text-indigo-300">You Love</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-purple-300">You Love</span>
               </h1>
-              <p className="mt-4 text-lg text-gray-300 leading-relaxed max-w-lg">
-                Curated collections across electronics, fashion, home, and more. 
-                Smart picks tailored to your taste.
+              <p className="text-lg text-gray-300 max-w-lg leading-relaxed">
+                Curated collections across electronics, fashion, home, and more. Smart picks tailored to your taste.
               </p>
-              <div className="flex gap-3 mt-8">
-                <Link href="/products" className="bg-white text-gray-900 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg">
-                  Shop Now
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Link href="/products" className="inline-flex items-center gap-2 bg-white text-gray-900 font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg">
+                  Shop Now <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link href="#trending" className="border border-white/30 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/10 transition">
-                  Trending →
+                <Link href="#trending" className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/10 transition">
+                  <TrendingUp className="w-4 h-4" /> Trending
                 </Link>
                 <ShareButton title="Spree - Discover What You Love" dark />
               </div>
@@ -52,8 +57,8 @@ export default function HomePage() {
             <div className="hidden md:grid grid-cols-2 gap-3">
               {featured.slice(0, 4).map(p => (
                 <Link key={p.id} href={`/products/${p.slug}`} className="group">
-                  <div className="aspect-square bg-white/10 rounded-xl overflow-hidden backdrop-blur-sm hover:scale-105 transition-transform">
-                    <img src={p.image} alt={p.name} className="w-full h-full object-cover opacity-90 group-hover:opacity-100" />
+                  <div className="aspect-square bg-white/5 rounded-xl overflow-hidden backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all hover:scale-[1.02]">
+                    <img src={p.image} alt={p.name} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition" />
                   </div>
                 </Link>
               ))}
@@ -64,16 +69,15 @@ export default function HomePage() {
 
       {/* ── CATEGORIES ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2.5">
           {categories.map((cat, i) => {
-            const icons = ['📱', '👕', '🏠', '📚', '🏃', '💄'];
             const count = products.filter(p => p.category === cat).length;
             return (
               <Link key={cat} href={`/products?category=${encodeURIComponent(cat)}`}
-                className="bg-white rounded-xl p-4 shadow-md border border-gray-100 hover:border-indigo-200 hover:shadow-lg transition text-center group">
-                <span className="text-2xl">{icons[i] || '🛍️'}</span>
-                <h3 className="font-semibold text-gray-900 text-xs mt-1.5 leading-tight">{cat}</h3>
-                <p className="text-[10px] text-gray-400 mt-0.5">{count} items</p>
+                className="bg-white rounded-xl p-3.5 shadow-md border border-gray-100 hover:border-indigo-200 hover:shadow-lg transition-all text-center group hover:-translate-y-0.5">
+                <span className="text-2xl block">{categoryIcons[cat] || '🛍️'}</span>
+                <h3 className="font-semibold text-gray-900 text-[10px] mt-1.5 leading-tight">{cat}</h3>
+                <p className="text-[9px] text-gray-400 mt-0.5">{count} items</p>
               </Link>
             );
           })}
@@ -82,13 +86,17 @@ export default function HomePage() {
 
       {/* ── DEALS BANNER ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-        <Link href="/products" className="block bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl p-6 md:p-8 text-white overflow-hidden relative">
-          <div className="relative z-10">
-            <span className="text-amber-200 text-xs font-bold tracking-widest uppercase">Limited Time</span>
-            <h2 className="text-2xl md:text-3xl font-extrabold mt-1">Summer Sale — Up to 40% Off</h2>
-            <p className="text-amber-100 mt-1 text-sm">Best deals on top brands. Offer ends soon.</p>
-            <span className="inline-block mt-3 bg-white text-orange-600 font-bold px-5 py-2 rounded-full text-sm hover:bg-amber-50 transition">
-              Shop Deals →
+        <Link href="/products" className="block bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl p-6 md:p-8 text-white overflow-hidden relative group">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
+          <div className="relative z-10 flex items-center gap-4">
+            <div className="w-14 h-14 bg-white/15 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">🏷️</div>
+            <div className="flex-1">
+              <span className="text-amber-200 text-xs font-bold tracking-widest uppercase">Limited Time</span>
+              <h2 className="text-xl md:text-2xl font-extrabold mt-0.5">Summer Sale — Up to 40% Off</h2>
+              <p className="text-amber-100 text-sm mt-0.5">Best deals on top brands. Offer ends soon.</p>
+            </div>
+            <span className="hidden md:inline-flex items-center gap-1.5 bg-white text-orange-600 font-bold px-5 py-2.5 rounded-full text-sm hover:bg-amber-50 transition group-hover:gap-2">
+              Shop <ArrowRight className="w-4 h-4" />
             </span>
           </div>
         </Link>
@@ -96,59 +104,42 @@ export default function HomePage() {
 
       {/* ── FEATURED ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-xl font-bold text-gray-900">Featured Picks</h2>
-          <Link href="/products" className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition">
-            View All →
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-indigo-600" />
+            <h2 className="text-xl font-bold text-gray-900">Featured Picks</h2>
+          </div>
+          <Link href="/products" className="inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition group">
+            View All <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition" />
           </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          {featured.map((p, i) => (
-            <ProductCard key={p.id} product={p} priority={i < 3} />
-          ))}
+          {featured.map((p, i) => (<ProductCard key={p.id} product={p} priority={i < 3} />))}
         </div>
       </section>
 
       {/* ── TRENDING ── */}
       <section id="trending" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
         <div className="flex items-center gap-2 mb-5">
-          <span className="text-lg">🔥</span>
+          <TrendingUp className="w-5 h-5 text-indigo-600" />
           <h2 className="text-xl font-bold text-gray-900">Trending Now</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          {trending.map((p, i) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+          {trending.map((p, i) => (<ProductCard key={p.id} product={p} />))}
         </div>
       </section>
-
-      {/* ── PERSONALIZED RECOMMENDATIONS ── */}
-      {personalized.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-          <div className="flex items-center gap-2 mb-5">
-            <span className="text-lg">🎯</span>
-            <h2 className="text-xl font-bold text-gray-900">Based on Your Activity</h2>
-            <span className="text-[10px] bg-indigo-100 text-indigo-600 font-bold px-2 py-0.5 rounded-full">Personalized</span>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-            {personalized.map((p, i) => (
-              <ProductCard key={p.id} product={p} priority={i < 2} />
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* ── TOP BRANDS ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
         <div className="flex items-center gap-2 mb-5">
-          <span className="text-lg">🏷️</span>
+          <Tag className="w-5 h-5 text-indigo-600" />
           <h2 className="text-xl font-bold text-gray-900">Top Brands</h2>
         </div>
-        <div className="flex gap-4 overflow-x-auto pb-3 -mx-4 px-4 snap-x">
+        <div className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4 snap-x">
           {['Apple', 'Samsung', 'Sony', 'Nike', 'Adidas', 'Dell', 'HP', 'Lenovo', 'ASUS', 'Bose', 'Puma', "Levi's"].map(brand => (
             <Link key={brand} href={`/products?search=${encodeURIComponent(brand)}`}
-              className="snap-start shrink-0 bg-white border border-gray-200 rounded-xl px-6 py-4 flex items-center gap-3 hover:shadow-md hover:border-indigo-200 transition min-w-[140px]">
-              <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-xs font-bold text-gray-600">
+              className="snap-start shrink-0 bg-white border border-gray-200 rounded-xl px-5 py-3.5 flex items-center gap-3 hover:shadow-md hover:border-indigo-200 transition-all min-w-[130px] hover:-translate-y-0.5">
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-full flex items-center justify-center text-sm font-bold text-indigo-600">
                 {brand.charAt(0)}
               </div>
               <div>
@@ -160,58 +151,38 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── EXPRESS / 10-MIN ORDER ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-        <Link href="/products" className="block bg-gradient-to-r from-green-600 to-emerald-700 rounded-2xl p-6 md:p-8 text-white overflow-hidden relative">
-          <div className="flex items-center gap-4">
-            <span className="text-4xl">⚡</span>
-            <div>
-              <span className="text-emerald-200 text-xs font-bold tracking-widest uppercase">Express</span>
-              <h2 className="text-2xl md:text-3xl font-extrabold mt-0.5">10-Minute Order</h2>
-              <p className="text-emerald-100 text-sm mt-1 max-w-md">Quick checkout for returning customers. Select, pay, and done — under 10 minutes.</p>
-              <span className="inline-block mt-3 bg-white text-emerald-700 font-bold px-5 py-2 rounded-full text-sm hover:bg-emerald-50 transition">
-                Shop Now →
-              </span>
-            </div>
-          </div>
-        </Link>
-      </section>
-
-      {/* ── PERSONALIZED (was "AI Recommendations") ── */}
-      {recommended.length > 0 && (
+      {/* ── PERSONALIZED RECS ── */}
+      {personalized.length > 0 && (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
           <div className="flex items-center gap-2 mb-5">
-            <span className="text-lg">🎯</span>
-            <h2 className="text-xl font-bold text-gray-900">Just For You</h2>
-            <span className="text-[10px] bg-indigo-100 text-indigo-600 font-bold px-2 py-0.5 rounded-full">Personalized</span>
+            <Target className="w-5 h-5 text-indigo-600" />
+            <h2 className="text-xl font-bold text-gray-900">Based on Your Activity</h2>
+            <span className="text-[10px] bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-600 font-bold px-2 py-0.5 rounded-full border border-indigo-100">Personalized</span>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            {recommended.map((p, i) => (
-              <ProductCard key={p.id} product={p} priority={i < 2} />
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {personalized.map((p, i) => (<ProductCard key={p.id} product={p} priority={i < 2} />))}
           </div>
         </section>
       )}
 
       {/* ── NEWSLETTER ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-8">
-        <div className="bg-gray-50 rounded-2xl p-8 md:p-12 border border-gray-200">
+        <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-2xl p-8 md:p-12 border border-indigo-100">
           <div className="max-w-lg mx-auto text-center">
-            <span className="text-3xl">✉️</span>
-            <h2 className="text-xl font-bold text-gray-900 mt-2">Stay in the Loop</h2>
+            <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm mb-3">
+              <Mail className="w-6 h-6 text-indigo-600" />
+            </div>
+            <h2 className="text-xl font-bold text-gray-900">Stay in the Loop</h2>
             <p className="text-sm text-gray-500 mt-1">Get early access to new drops and exclusive deals.</p>
             {subscribed ? (
-              <p className="mt-4 text-green-600 font-semibold">✓ You're on the list!</p>
+              <p className="mt-4 text-emerald-600 font-semibold">✓ You're on the list!</p>
             ) : (
-              <form onSubmit={async e => { e.preventDefault(); 
-                await fetch('/api/subscribe', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email, name: '' }) });
-                setSubscribed(true); 
-              }} className="mt-4 flex gap-2 max-w-sm mx-auto">
+              <form onSubmit={e => { e.preventDefault(); setSubscribed(true); }} className="mt-5 flex gap-2 max-w-sm mx-auto">
                 <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com"
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
-                <button type="submit" className="bg-gray-900 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-800 transition text-sm">
-                  Subscribe
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white" />
+                <button type="submit" className="bg-gray-900 text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-gray-800 transition text-sm inline-flex items-center gap-1.5">
+                  Subscribe <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
             )}
