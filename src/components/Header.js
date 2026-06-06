@@ -82,11 +82,10 @@ export default function Header() {
       <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 gap-3">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-1.5 shrink-0 group">
-              <span className="w-7 h-7 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center justify-center text-white text-xs font-bold group-hover:shadow-md transition-shadow">S</span>
-              <span className="font-bold text-base text-gray-900 tracking-tight">pree</span>
-            </Link>
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-0 shrink-0 group">
+            <span className="px-2.5 py-1 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg flex items-center text-white text-sm font-bold tracking-tight group-hover:shadow-md transition-shadow">Spree</span>
+          </Link>
 
             {/* Search Desktop */}
             <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md relative">

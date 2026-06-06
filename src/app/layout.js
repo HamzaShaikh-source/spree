@@ -19,9 +19,8 @@ export default function RootLayout({ children }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
                 <div>
-                  <div className="flex items-center gap-1.5 mb-4">
-                    <span className="w-6 h-6 bg-gradient-to-br from-indigo-600 to-purple-600 rounded flex items-center justify-center text-white text-[10px] font-bold">S</span>
-                    <span className="font-bold text-sm text-gray-900">pree</span>
+                  <div className="flex items-center gap-0 mb-4">
+                    <span className="px-2 py-0.5 bg-gradient-to-br from-indigo-600 to-purple-600 rounded text-white text-xs font-bold">Spree</span>
                   </div>
                   <p className="text-xs text-gray-500 leading-relaxed">Discover what you love. Curated products across 8 categories with personalized recommendations.</p>
                 </div>
