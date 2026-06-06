@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 
 export default function LoginModal({ isOpen, onClose }) {
   const { t } = useLanguage();
-  const [mode, setMode] = useState('login');
+  const [mode, setMode] = useState('login'); // login | signup | forgot | reset_sent
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -36,19 +36,24 @@ export default function LoginModal({ isOpen, onClose }) {
           options: { data: { full_name: name } }
         });
         if (signUpError) throw signUpError;
-        // Create profile
         if (data?.user) {
           await supabase.from('profiles').upsert({
             id: data.user.id,
             name,
             email: data.user.email,
-          });
+          }, { onConflict: 'id' });
         }
-        setError('✅ Check your email for confirmation!');
-      } else {
+        setError('✅ Check your email for confirmation link!');
+      } else if (mode === 'login') {
         const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
         if (signInError) throw signInError;
         onClose?.();
+      } else if (mode === 'forgot') {
+        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/?reset=true',
+        });
+        if (resetError) throw resetError;
+        setMode('reset_sent');
       }
     } catch (err) {
       setError(err.message);
@@ -71,6 +76,9 @@ export default function LoginModal({ isOpen, onClose }) {
     onClose?.();
   };
 
+  const resetToLogin = () => { setMode('login'); setError(''); setEmail(''); setPassword(''); };
+  const goToForgot = () => { setMode('forgot'); setError(''); };
+
   if (!isOpen && !user) return null;
 
   return (
@@ -91,6 +99,36 @@ export default function LoginModal({ isOpen, onClose }) {
               {t('logout')}
             </button>
           </div>
+        ) : mode === 'reset_sent' ? (
+          <div className="text-center py-4">
+            <p className="text-4xl mb-3">📬</p>
+            <h3 className="font-bold text-gray-900 text-lg">Check Your Email</h3>
+            <p className="text-sm text-gray-500 mt-2">We&apos;ve sent a password reset link to <strong>{email}</strong></p>
+            <p className="text-xs text-gray-400 mt-2">Didn&apos;t receive it? Check spam folder or try again.</p>
+            <button onClick={resetToLogin} className="mt-4 text-indigo-600 font-semibold text-sm hover:underline">
+              ← Back to Login
+            </button>
+          </div>
+        ) : mode === 'forgot' ? (
+          <>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-gray-900 text-lg">Reset Password</h3>
+              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+            </div>
+            {error && <p className={`text-xs mb-3 p-2 rounded-lg ${error.includes('✅') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'}`}>{error}</p>}
+            <p className="text-xs text-gray-500 mb-4">Enter your email and we&apos;ll send you a reset link.</p>
+            <form onSubmit={handleEmailAuth} className="space-y-3">
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="Your email" required className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+              <button type="submit" disabled={loading}
+                className="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition text-sm disabled:opacity-50">
+                {loading ? 'Sending...' : 'Send Reset Link'}
+              </button>
+            </form>
+            <button onClick={resetToLogin} className="mt-3 text-xs text-indigo-600 font-semibold hover:underline w-full text-center">
+              ← Back to Login
+            </button>
+          </>
         ) : (
           <>
             <div className="flex items-center justify-between mb-4">
@@ -120,11 +158,19 @@ export default function LoginModal({ isOpen, onClose }) {
                 placeholder="Email" required className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
               <input type="password" value={password} onChange={e => setPassword(e.target.value)}
                 placeholder="Password" required minLength={6} className="w-full px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+              {mode === 'login' && (
+                <div className="text-right">
+                  <button type="button" onClick={goToForgot} className="text-xs text-indigo-600 hover:underline font-medium">
+                    Forgot password?
+                  </button>
+                </div>
+              )}
               <button type="submit" disabled={loading}
                 className="w-full bg-gray-900 text-white font-bold py-2.5 rounded-xl hover:bg-gray-800 transition text-sm disabled:opacity-50">
                 {loading ? 'Please wait...' : mode === 'login' ? t('login') : t('signup')}
               </button>
             </form>
+
             <p className="text-xs text-gray-400 text-center mt-3">
               {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
               <button onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(''); }} className="text-indigo-600 font-semibold hover:underline">
