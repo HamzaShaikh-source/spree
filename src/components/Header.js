@@ -17,6 +17,7 @@ export default function Header() {
   const [user, setUser] = useState(null);
   const [langOpen, setLangOpen] = useState(false);
   const [listening, setListening] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
   const [showVoiceTip, setShowVoiceTip] = useState(false);
   const searchRef = useRef(null);
   const recognitionRef = useRef(null);
@@ -100,6 +101,8 @@ export default function Header() {
                   type="text"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
                   placeholder={t('search')}
                   className="w-full pl-8 pr-14 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition"
                 />
@@ -119,6 +122,7 @@ export default function Header() {
               </div>
               <SearchSuggestions 
                 query={searchQuery} 
+                isFocused={searchFocused}
                 onSearch={(term) => setSearchQuery(term)}
                 onSubmit={() => {
                   if (searchQuery.trim()) {

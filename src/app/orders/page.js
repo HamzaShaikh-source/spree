@@ -11,6 +11,7 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase?.auth) { setLoading(false); return; }
     supabase.auth.getSession().then(({ data }) => {
       if (data?.session?.user) {
         setUser(data.session.user);
@@ -22,9 +23,11 @@ export default function OrdersPage() {
   }, []);
 
   const fetchOrders = async (userId) => {
-    const res = await fetch(`/api/orders?user_id=${userId}`);
-    const data = await res.json();
-    setOrders(data.orders || []);
+    try {
+      const res = await fetch(`/api/orders?user_id=${userId}`);
+      const data = await res.json();
+      setOrders(data.orders || []);
+    } catch(e) { setOrders([]); }
     setLoading(false);
   };
 
