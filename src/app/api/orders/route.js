@@ -7,7 +7,16 @@ const adminClient = createClient(supabaseUrl, serviceKey);
 export async function POST(req) {
   try {
     const body = await req.json();
-    const { user_id, items, shipping, payment_method, subtotal, discount, shipping_charge, total, coupon_code } = body;
+    const { user_id, user_email, user_name, items, shipping, payment_method, subtotal, discount, shipping_charge, total, coupon_code } = body;
+    
+    // Ensure profile exists first (foreign key constraint)
+    if (user_id) {
+      await adminClient.from('profiles').upsert({
+        id: user_id,
+        email: user_email || 'unknown@email.com',
+        name: user_name || 'User',
+      }, { onConflict: 'id' }).maybeSingle();
+    }
     
     const orderNumber = 'ORD-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 6).toUpperCase();
     

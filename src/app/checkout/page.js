@@ -131,6 +131,8 @@ export default function CheckoutPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             user_id: session.user.id,
+            user_email: session.user.email,
+            user_name: session.user.user_metadata?.full_name || '',
             items,
             shipping,
             payment_method: payment.method,
