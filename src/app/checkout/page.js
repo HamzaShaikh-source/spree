@@ -19,6 +19,45 @@ export default function CheckoutPage() {
   const [shipping, setShipping] = useState({ name: '', email: '', phone: '', address: '', city: '', pincode: '' });
   const [payment, setPayment] = useState({ method: 'cod', cardNumber: '', expiry: '', cvv: '' });
   const [errors, setErrors] = useState({});
+  const [couponCode, setCouponCode] = useState('');
+  const [couponApplied, setCouponApplied] = useState(null);
+  const [couponMsg, setCouponMsg] = useState('');
+  const [discount, setDiscount] = useState(0);
+
+  const COUPONS = {
+    'WELCOME10': { type: 'percent', value: 10, desc: '10% off your first order' },
+    'SPREE20': { type: 'percent', value: 20, desc: '20% off on all items' },
+    'SAVE500': { type: 'flat', value: 500, desc: '₹500 off on orders above ₹2999', minOrder: 2999 },
+    'FREESHIP': { type: 'freeshipping', value: 0, desc: 'Free shipping (already applied below ₹999)' },
+  };
+
+  const applyCoupon = () => {
+    const code = couponCode.trim().toUpperCase();
+    const coupon = COUPONS[code];
+    if (!coupon) { setCouponMsg('❌ Invalid coupon code'); setCouponApplied(null); setDiscount(0); return; }
+    if (coupon.minOrder && total < coupon.minOrder) {
+      setCouponMsg(`❌ Minimum order ₹${coupon.minOrder.toLocaleString('en-IN')} required`);
+      setCouponApplied(null); setDiscount(0); return;
+    }
+    setCouponApplied(coupon);
+    if (coupon.type === 'percent') {
+      setDiscount(Math.round(total * coupon.value / 100));
+      setCouponMsg(`✅ ${coupon.desc} — saved ₹${Math.round(total * coupon.value / 100).toLocaleString('en-IN')}`);
+    } else if (coupon.type === 'flat') {
+      setDiscount(coupon.value);
+      setCouponMsg(`✅ ${coupon.desc}`);
+    } else if (coupon.type === 'freeshipping') {
+      setDiscount(0);
+      setCouponMsg(`✅ ${coupon.desc}`);
+    }
+  };
+
+  const removeCoupon = () => {
+    setCouponApplied(null);
+    setCouponCode('');
+    setDiscount(0);
+    setCouponMsg('');
+  };
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -31,8 +70,8 @@ export default function CheckoutPage() {
   }, [step, router]);
 
   const total = items.reduce((s, i) => s + i.price * i.qty, 0);
-  const shippingCost = total >= 999 ? 0 : 99;
-  const grandTotal = total + shippingCost;
+  const shippingCost = (total - discount) >= 999 || couponApplied?.type === 'freeshipping' ? 0 : 99;
+  const grandTotal = Math.max(0, total + shippingCost - discount);
 
   const validateShipping = () => {
     const e = {};
@@ -276,6 +315,31 @@ export default function CheckoutPage() {
         {/* Sidebar Summary */}
         <div className="bg-white rounded-xl border border-gray-200 p-5 h-fit">
           <h3 className="font-bold text-gray-900 text-sm mb-3">Order Summary</h3>
+
+          {/* Coupon */}
+          {!couponApplied ? (
+            <div className="mb-4">
+              <label className="text-xs font-medium text-gray-600 block mb-1">Have a coupon?</label>
+              <div className="flex gap-1">
+                <input type="text" value={couponCode} onChange={e => setCouponCode(e.target.value)}
+                  placeholder="Enter code" className="flex-1 px-2 py-1.5 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+                <button onClick={applyCoupon} className="px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-xs font-bold hover:bg-indigo-700 transition">Apply</button>
+              </div>
+              {couponMsg && <p className="text-[10px] mt-1 font-medium">{couponMsg}</p>}
+              <div className="mt-1.5 text-[9px] text-gray-400 space-y-0.5">
+                <p>Try: <strong>WELCOME10</strong> (10% off) · <strong>SPREE20</strong> (20% off)</p>
+                <p><strong>SAVE500</strong> (₹500 off ≥₹2999) · <strong>FREESHIP</strong></p>
+              </div>
+            </div>
+          ) : (
+            <div className="mb-4 bg-green-50 rounded-lg p-2 flex items-center justify-between">
+              <div>
+                <p className="text-xs font-bold text-green-700">✅ {couponCode}</p>
+                <p className="text-[10px] text-green-600">{couponApplied.desc}</p>
+              </div>
+              <button onClick={removeCoupon} className="text-xs text-red-500 hover:underline">Remove</button>
+            </div>
+          )}
           <div className="space-y-2 text-sm">
             {items.map(item => (
               <div key={item.id} className="flex justify-between">
@@ -289,6 +353,12 @@ export default function CheckoutPage() {
               <span className="text-gray-500">Subtotal</span>
               <span className="font-medium">{formatPrice(total)}</span>
             </div>
+            {discount > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-green-600">Discount</span>
+                <span className="text-green-600 font-semibold">−{formatPrice(discount)}</span>
+              </div>
+            )}
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Shipping</span>
               <span className={shippingCost === 0 ? 'text-green-600 font-semibold' : ''}>
