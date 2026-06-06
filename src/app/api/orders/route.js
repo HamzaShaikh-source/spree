@@ -2,13 +2,15 @@ import { createClient } from '@supabase/supabase-js';
 import { sendOrderConfirmation } from '@/lib/email';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_KEY;
-const adminClient = createClient(supabaseUrl, serviceKey);
+const serviceKey = process.env.SUPABASE_SERVICE_KEY || '';
+const adminClient = serviceKey ? createClient(supabaseUrl, serviceKey) : null;
 
 export async function POST(req) {
   try {
     const body = await req.json();
     const { user_id, user_email, user_name, items, shipping, payment_method, subtotal, discount, shipping_charge, total, coupon_code } = body;
+    
+    if (!adminClient) return Response.json({ success: false, error: 'DB not configured' }, { status: 500 });
     
     // Ensure profile exists first (foreign key constraint)
     if (user_id) {
@@ -52,6 +54,7 @@ export async function GET(req) {
   const userId = searchParams.get('user_id');
   
   if (!userId) return Response.json({ orders: [] });
+  if (!adminClient) return Response.json({ orders: [] });
   
   const { data, error } = await adminClient
     .from('orders')
