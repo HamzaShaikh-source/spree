@@ -2,48 +2,59 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { supabase } from '@/lib/supabase';
 import { formatPrice } from '@/data/products';
 
 export default function OrdersPage() {
-  const [user, setUser] = useState(null);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (!supabase?.auth) { setLoading(false); return; }
-    supabase.auth.getSession().then(({ data }) => {
-      if (data?.session?.user) {
-        setUser(data.session.user);
-        fetchOrders(data.session.user.id);
-      } else {
-        setLoading(false);
-      }
-    });
+    // Try to get orders from API (works if any user is logged in)
+    loadOrders();
   }, []);
 
-  const fetchOrders = async (userId) => {
+  const loadOrders = async () => {
     try {
-      const res = await fetch(`/api/orders?user_id=${userId}`);
-      const data = await res.json();
-      setOrders(data.orders || []);
-    } catch(e) { setOrders([]); }
+      // First check if we have a session by calling the orders API
+      const res = await fetch('/api/orders?user_id=me');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.orders) {
+          setOrders(data.orders);
+          setLoggedIn(true);
+          setLoading(false);
+          return;
+        }
+      }
+    } catch(e) {}
+    
+    // If that fails, try to get user_id from URL fragment (after Google login)
+    try {
+      const hash = window.location.hash;
+      if (hash && hash.includes('access_token')) {
+        // User just logged in - save their session info
+        const params = new URLSearchParams(hash.replace('#', ''));
+        const email = params.get('email') || 'user';
+        localStorage.setItem('spree-session', JSON.stringify({ email }));
+      }
+    } catch(e) {}
+    
+    // Try getting orders with the stored user_id (from checkout)
+    const session = JSON.parse(localStorage.getItem('spree-session') || 'null');
+    if (session?.user_id) {
+      try {
+        const res = await fetch(`/api/orders?user_id=${session.user_id}`);
+        const data = await res.json();
+        setOrders(data.orders || []);
+        setLoggedIn(true);
+      } catch(e) {}
+    }
+    
     setLoading(false);
   };
 
   if (loading) return <div className="max-w-3xl mx-auto px-4 py-20 text-center text-gray-400">Loading...</div>;
-
-  if (!user) {
-    return (
-      <div className="max-w-lg mx-auto px-4 py-20 text-center">
-        <p className="text-4xl mb-4">🔒</p>
-        <h1 className="text-xl font-bold text-gray-900">Sign in to view orders</h1>
-        <Link href="/" className="mt-4 inline-block bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-indigo-700 transition text-sm">
-          Go Home
-        </Link>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
@@ -52,9 +63,10 @@ export default function OrdersPage() {
 
       {orders.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
-          <p className="text-gray-500">No orders yet</p>
+          <p className="text-4xl mb-3">📦</p>
+          <p className="text-gray-500 text-lg">{loggedIn ? 'No orders yet' : 'Sign in to view your orders'}</p>
           <Link href="/products" className="mt-3 inline-block text-indigo-600 font-semibold text-sm hover:underline">
-            Start Shopping →
+            {loggedIn ? 'Start Shopping →' : 'Browse Products'}
           </Link>
         </div>
       ) : (
@@ -71,7 +83,7 @@ export default function OrdersPage() {
                 </span>
               </div>
               <div className="space-y-2 text-sm">
-                {order.items?.map((item, i) => (
+                {(typeof order.items === 'string' ? JSON.parse(order.items) : order.items || []).map((item, i) => (
                   <div key={i} className="flex justify-between">
                     <span className="text-gray-600">{item.name} × {item.qty}</span>
                     <span className="font-medium">{formatPrice(item.price * item.qty)}</span>

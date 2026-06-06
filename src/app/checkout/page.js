@@ -124,8 +124,13 @@ export default function CheckoutPage() {
     
     // Save order to Supabase if user is logged in
     try {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { supabase: sb } = await import('@/lib/supabase');
+      if (!sb?.auth) throw new Error('Auth unavailable');
+      const { data: { session } } = await sb.auth.getSession();
       if (session?.user) {
+        // Save user_id for orders page to use
+        localStorage.setItem('spree-session', JSON.stringify({ user_id: session.user.id, email: session.user.email }));
+        
         await fetch('/api/orders', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
