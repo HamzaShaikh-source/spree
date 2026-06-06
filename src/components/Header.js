@@ -147,11 +147,11 @@ export default function Header() {
                 </button>
                 <div className="absolute top-full left-0 mt-0.5 bg-white border border-gray-200 rounded-xl shadow-lg py-1.5 min-w-[180px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150">
                   {categories.map(cat => (
-                    <Link key={cat} href={`/products?category=${encodeURIComponent(cat)}`}
-                      className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-gray-50">{cat}</Link>
+                    <a key={cat} href={`/products?category=${encodeURIComponent(cat)}`}
+                      className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-gray-50">{cat}</a>
                   ))}
                   <div className="border-t border-gray-100 mt-1 pt-1">
-                    <Link href="/products" className="block px-4 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-gray-50">{t('viewAll')}</Link>
+                    <a href="/products" className="block px-4 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-gray-50">{t('viewAll')}</a>
                   </div>
                 </div>
               </div>
