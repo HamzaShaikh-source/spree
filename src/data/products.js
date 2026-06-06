@@ -1,0 +1,486 @@
+// ── Product Data ──
+// 48 products across 6 categories
+
+const products = [
+  // ── Electronics (8) ──
+  {
+    id: 'el-1', name: 'Wireless Noise-Cancelling Headphones', slug: 'wireless-nc-headphones',
+    price: 2499, originalPrice: 3499, category: 'Electronics',
+    tags: ['audio', 'wireless', 'bluetooth', 'noise-cancelling', 'premium'],
+    rating: 4.7, reviews: 234, featured: true,
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop',
+    description: 'Premium wireless headphones with active noise cancellation, 30-hour battery life, and ultra-comfortable ear cushions for immersive listening.',
+    inStock: true,
+  },
+  {
+    id: 'el-2', name: 'Smart Watch Pro Series', slug: 'smart-watch-pro',
+    price: 3999, originalPrice: 4999, category: 'Electronics',
+    tags: ['wearable', 'fitness', 'smartwatch', 'bluetooth', 'premium'],
+    rating: 4.5, reviews: 189, featured: true,
+    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop',
+    description: 'Advanced smartwatch with health monitoring, GPS tracking, 100+ workout modes, and 7-day battery life.',
+    inStock: true,
+  },
+  {
+    id: 'el-3', name: 'Portable Bluetooth Speaker', slug: 'portable-bt-speaker',
+    price: 1299, originalPrice: 1799, category: 'Electronics',
+    tags: ['audio', 'wireless', 'bluetooth', 'portable', 'waterproof'],
+    rating: 4.3, reviews: 456, featured: false,
+    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop',
+    description: 'Rugged waterproof speaker with 360° sound, 20-hour playtime, and built-in microphone for calls.',
+    inStock: true,
+  },
+  {
+    id: 'el-4', name: 'USB-C Fast Charger 65W', slug: 'usbc-fast-charger',
+    price: 899, originalPrice: 1299, category: 'Electronics',
+    tags: ['charger', 'usbc', 'fast-charging', 'travel', 'accessories'],
+    rating: 4.6, reviews: 892, featured: false,
+    image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop',
+    description: 'GaN tech 65W fast charger compatible with laptops, tablets, and phones. Compact design with foldable prongs.',
+    inStock: true,
+  },
+  {
+    id: 'el-5', name: '4K Action Camera', slug: '4k-action-camera',
+    price: 5499, originalPrice: 6999, category: 'Electronics',
+    tags: ['camera', '4k', 'waterproof', 'travel', 'action'],
+    rating: 4.4, reviews: 167, featured: true,
+    image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=400&fit=crop',
+    description: 'Capture every adventure in stunning 4K. Waterproof to 10m, image stabilization, and wide-angle lens.',
+    inStock: true,
+  },
+  {
+    id: 'el-6', name: 'Wireless Earbuds Pro', slug: 'wireless-earbuds-pro',
+    price: 1799, originalPrice: 2499, category: 'Electronics',
+    tags: ['audio', 'wireless', 'bluetooth', 'earbuds', 'portable'],
+    rating: 4.2, reviews: 567, featured: false,
+    image: 'https://images.unsplash.com/photo-1590658268037-6bf12f032f55?w=400&h=400&fit=crop',
+    description: 'True wireless earbuds with active noise cancellation, 24h battery with case, and IPX5 water resistance.',
+    inStock: false,
+  },
+  {
+    id: 'el-7', name: 'Mechanical Gaming Keyboard', slug: 'mechanical-gaming-keyboard',
+    price: 2199, originalPrice: 2999, category: 'Electronics',
+    tags: ['gaming', 'keyboard', 'mechanical', 'rgb', 'accessories'],
+    rating: 4.6, reviews: 723, featured: true,
+    image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=400&h=400&fit=crop',
+    description: 'RGB mechanical keyboard with Cherry MX switches, programmable keys, and aircraft-grade aluminum frame.',
+    inStock: true,
+  },
+  {
+    id: 'el-8', name: 'Wireless Charging Pad', slug: 'wireless-charging-pad',
+    price: 499, originalPrice: 799, category: 'Electronics',
+    tags: ['charger', 'wireless', 'accessories', 'travel', 'minimal'],
+    rating: 4.3, reviews: 1234, featured: false,
+    image: 'https://images.unsplash.com/photo-1622445275576-721325763afe?w=400&h=400&fit=crop',
+    description: 'Fast wireless charging pad compatible with all Qi devices. Slim design with LED indicator and foreign object detection.',
+    inStock: true,
+  },
+
+  // ── Fashion (10) ──
+  {
+    id: 'fa-1', name: 'Classic Denim Jacket', slug: 'classic-denim-jacket',
+    price: 1999, originalPrice: 2799, category: 'Fashion',
+    tags: ['clothing', 'jacket', 'denim', 'casual', 'classic'],
+    rating: 4.6, reviews: 123, featured: true,
+    image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=400&h=400&fit=crop',
+    description: 'Timeless denim jacket crafted from premium cotton. Features button closure, chest pockets, and adjustable waistband.',
+    inStock: true,
+  },
+  {
+    id: 'fa-2', name: 'Running Shoes Ultra', slug: 'running-shoes-ultra',
+    price: 3299, originalPrice: 4499, category: 'Fashion',
+    tags: ['footwear', 'running', 'sports', 'comfort', 'performance'],
+    rating: 4.8, reviews: 345, featured: true,
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop',
+    description: 'Lightweight performance running shoes with responsive cushioning, breathable mesh upper, and superior grip outsole.',
+    inStock: true,
+  },
+  {
+    id: 'fa-3', name: 'Casual Linen Shirt', slug: 'casual-linen-shirt',
+    price: 999, originalPrice: 1499, category: 'Fashion',
+    tags: ['clothing', 'shirt', 'linen', 'casual', 'summer'],
+    rating: 4.3, reviews: 234, featured: false,
+    image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=400&fit=crop',
+    description: 'Breathable pure linen shirt perfect for summer. Relaxed fit with roll-up sleeves and chest pocket.',
+    inStock: true,
+  },
+  {
+    id: 'fa-4', name: 'Leather Crossbody Bag', slug: 'leather-crossbody-bag',
+    price: 1499, originalPrice: 2199, category: 'Fashion',
+    tags: ['accessories', 'bag', 'leather', 'travel', 'premium'],
+    rating: 4.5, reviews: 189, featured: true,
+    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=400&fit=crop',
+    description: 'Genuine leather crossbody bag with adjustable strap, multiple compartments, and magnetic closure.',
+    inStock: true,
+  },
+  {
+    id: 'fa-5', name: 'Aviator Sunglasses', slug: 'aviator-sunglasses',
+    price: 799, originalPrice: 1299, category: 'Fashion',
+    tags: ['accessories', 'sunglasses', 'classic', 'summer', 'unisex'],
+    rating: 4.4, reviews: 678, featured: false,
+    image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop',
+    description: 'Classic aviator sunglasses with UV400 protection, lightweight metal frame, and gradient lenses.',
+    inStock: true,
+  },
+  {
+    id: 'fa-6', name: 'Wool Blend Scarf', slug: 'wool-blend-scarf',
+    price: 599, originalPrice: 899, category: 'Fashion',
+    tags: ['accessories', 'scarf', 'wool', 'winter', 'classic'],
+    rating: 4.1, reviews: 156, featured: false,
+    image: 'https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=400&h=400&fit=crop',
+    description: 'Soft wool blend scarf with fringed edges. Keeps you warm and stylish during cold months.',
+    inStock: true,
+  },
+  {
+    id: 'fa-7', name: 'Slim Fit Chinos', slug: 'slim-fit-chinos',
+    price: 1299, originalPrice: 1799, category: 'Fashion',
+    tags: ['clothing', 'pants', 'chinos', 'casual', 'formal'],
+    rating: 4.4, reviews: 432, featured: false,
+    image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=400&fit=crop',
+    description: 'Comfortable stretch chinos with modern slim fit. Wrinkle-resistant fabric for all-day wear.',
+    inStock: true,
+  },
+  {
+    id: 'fa-8', name: 'Leather Wallet RFID', slug: 'leather-wallet-rfid',
+    price: 699, originalPrice: 999, category: 'Fashion',
+    tags: ['accessories', 'wallet', 'leather', 'minimal', 'travel'],
+    rating: 4.5, reviews: 891, featured: false,
+    image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&h=400&fit=crop',
+    description: 'Slim RFID-blocking leather wallet with 6 card slots and hidden bill pocket. Premium cowhide leather.',
+    inStock: true,
+  },
+  {
+    id: 'fa-9', name: 'Cotton Hoodie Premium', slug: 'cotton-hoodie-premium',
+    price: 1499, originalPrice: 2199, category: 'Fashion',
+    tags: ['clothing', 'hoodie', 'cotton', 'casual', 'winter'],
+    rating: 4.7, reviews: 567, featured: true,
+    image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop',
+    description: 'Ultra-soft heavyweight cotton hoodie with fleece lining. Kangaroo pocket, adjustable hood, and ribbed cuffs.',
+    inStock: true,
+  },
+  {
+    id: 'fa-10', name: 'Canvas Backpack', slug: 'canvas-backpack',
+    price: 1099, originalPrice: 1599, category: 'Fashion',
+    tags: ['accessories', 'bag', 'backpack', 'travel', 'casual'],
+    rating: 4.3, reviews: 345, featured: false,
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop',
+    description: 'Durable canvas backpack with padded laptop compartment, multiple pockets, and ergonomic straps.',
+    inStock: true,
+  },
+
+  // ── Home & Kitchen (10) ──
+  {
+    id: 'hk-1', name: 'Ceramic Coffee Mug Set', slug: 'ceramic-mug-set',
+    price: 699, originalPrice: 999, category: 'Home & Kitchen',
+    tags: ['kitchen', 'ceramic', 'coffee', 'minimal', 'gift'],
+    rating: 4.7, reviews: 345, featured: true,
+    image: 'https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=400&h=400&fit=crop',
+    description: 'Set of 4 handcrafted ceramic mugs with minimalist design. Microwave and dishwasher safe.',
+    inStock: true,
+  },
+  {
+    id: 'hk-2', name: 'Indoor Plant Pot Set', slug: 'indoor-plant-pot-set',
+    price: 899, originalPrice: 1299, category: 'Home & Kitchen',
+    tags: ['home', 'decor', 'plants', 'minimal', 'gift'],
+    rating: 4.5, reviews: 234, featured: false,
+    image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=400&h=400&fit=crop',
+    description: 'Set of 3 minimalist ceramic plant pots with drainage holes and bamboo trays included.',
+    inStock: true,
+  },
+  {
+    id: 'hk-3', name: 'Steel Water Bottle 750ml', slug: 'steel-water-bottle',
+    price: 499, originalPrice: 799, category: 'Home & Kitchen',
+    tags: ['kitchen', 'bottle', 'eco-friendly', 'travel', 'stainless-steel'],
+    rating: 4.6, reviews: 567, featured: true,
+    image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=400&fit=crop',
+    description: 'Double-wall vacuum insulated bottle. Keeps drinks cold 24h or hot 12h. BPA-free, 750ml capacity.',
+    inStock: true,
+  },
+  {
+    id: 'hk-4', name: 'Scented Candle Trio', slug: 'scented-candle-trio',
+    price: 399, originalPrice: 599, category: 'Home & Kitchen',
+    tags: ['home', 'decor', 'candle', 'gift', 'relaxation'],
+    rating: 4.3, reviews: 432, featured: false,
+    image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=400&h=400&fit=crop',
+    description: 'Set of 3 soy wax candles in vanilla, lavender, and sandalwood. 25-hour burn time each. Eco-friendly.',
+    inStock: true,
+  },
+  {
+    id: 'hk-5', name: 'Bamboo Cutting Board', slug: 'bamboo-cutting-board',
+    price: 349, originalPrice: 499, category: 'Home & Kitchen',
+    tags: ['kitchen', 'bamboo', 'eco-friendly', 'cooking', 'minimal'],
+    rating: 4.4, reviews: 289, featured: false,
+    image: 'https://images.unsplash.com/photo-1594226801341-41427b4e5c22?w=400&h=400&fit=crop',
+    description: 'Organic bamboo cutting board with juice groove. Large size (45x30cm). Naturally antimicrobial.',
+    inStock: true,
+  },
+  {
+    id: 'hk-6', name: 'Memory Foam Pillow', slug: 'memory-foam-pillow',
+    price: 899, originalPrice: 1499, category: 'Home & Kitchen',
+    tags: ['bedroom', 'pillow', 'comfort', 'sleep', 'premium'],
+    rating: 4.7, reviews: 891, featured: false,
+    image: 'https://images.unsplash.com/photo-1559561853-084c1d5c76f2?w=400&h=400&fit=crop',
+    description: 'Premium memory foam pillow with cooling gel layer. Ergonomic neck support for restful sleep.',
+    inStock: true,
+  },
+  {
+    id: 'hk-7', name: 'Stainless Steel Cookware Set', slug: 'ss-cookware-set',
+    price: 3499, originalPrice: 4999, category: 'Home & Kitchen',
+    tags: ['kitchen', 'cookware', 'premium', 'cooking', 'stainless-steel'],
+    rating: 4.8, reviews: 234, featured: true,
+    image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop',
+    description: '10-piece stainless steel cookware set with tri-ply construction. Oven safe, dishwasher friendly.',
+    inStock: true,
+  },
+  {
+    id: 'hk-8', name: 'LED Desk Lamp', slug: 'led-desk-lamp',
+    price: 799, originalPrice: 1199, category: 'Home & Kitchen',
+    tags: ['home', 'lighting', 'led', 'minimal', 'work'],
+    rating: 4.5, reviews: 678, featured: false,
+    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057ab6fe?w=400&h=400&fit=crop',
+    description: 'Adjustable LED desk lamp with 5 brightness levels, USB charging port, and eye-care technology.',
+    inStock: true,
+  },
+  {
+    id: 'hk-9', name: 'Luxury Throw Blanket', slug: 'luxury-throw-blanket',
+    price: 1299, originalPrice: 1899, category: 'Home & Kitchen',
+    tags: ['home', 'bedroom', 'blanket', 'comfort', 'premium'],
+    rating: 4.6, reviews: 456, featured: true,
+    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=400&fit=crop',
+    description: 'Ultra-soft microfiber throw blanket in charcoal grey. Perfect for cozy nights on the couch.',
+    inStock: true,
+  },
+  {
+    id: 'hk-10', name: 'French Press Coffee Maker', slug: 'french-press-coffee',
+    price: 599, originalPrice: 899, category: 'Home & Kitchen',
+    tags: ['kitchen', 'coffee', 'premium', 'cooking', 'minimal'],
+    rating: 4.4, reviews: 567, featured: false,
+    image: 'https://images.unsplash.com/photo-1564135625956-9054b4b6b26c?w=400&h=400&fit=crop',
+    description: 'Classic French press with borosilicate glass carafe and stainless steel plunger. Makes 8 cups.',
+    inStock: true,
+  },
+
+  // ── Books & Media (8) ──
+  {
+    id: 'bm-1', name: 'The Art of AI: A Beginner\'s Guide', slug: 'art-of-ai-guide',
+    price: 499, originalPrice: 699, category: 'Books & Media',
+    tags: ['book', 'technology', 'ai', 'education', 'programming'],
+    rating: 4.8, reviews: 123, featured: true,
+    image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=400&fit=crop',
+    description: 'Comprehensive guide to artificial intelligence concepts, from machine learning basics to neural networks.',
+    inStock: true,
+  },
+  {
+    id: 'bm-2', name: 'Vinyl Record - Jazz Classics', slug: 'jazz-vinyl-record',
+    price: 799, originalPrice: 999, category: 'Books & Media',
+    tags: ['music', 'vinyl', 'jazz', 'classic', 'premium'],
+    rating: 4.9, reviews: 89, featured: true,
+    image: 'https://images.unsplash.com/photo-1595209776413-48ce7f47b0a2?w=400&h=400&fit=crop',
+    description: '180g vinyl pressing featuring 12 timeless jazz tracks. Includes digital download code and liner notes.',
+    inStock: true,
+  },
+  {
+    id: 'bm-3', name: 'Premium Hardcover Notebook', slug: 'premium-notebook',
+    price: 299, originalPrice: 449, category: 'Books & Media',
+    tags: ['stationery', 'notebook', 'minimal', 'gift', 'premium'],
+    rating: 4.5, reviews: 456, featured: false,
+    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400&h=400&fit=crop',
+    description: 'Hardcover dotted notebook with 192 pages of 100gsm paper. Lay-flat binding, ribbon bookmark, and elastic closure.',
+    inStock: true,
+  },
+  {
+    id: 'bm-4', name: 'Modern JavaScript Guide', slug: 'modern-js-guide',
+    price: 599, originalPrice: 799, category: 'Books & Media',
+    tags: ['book', 'technology', 'programming', 'javascript', 'education'],
+    rating: 4.6, reviews: 234, featured: false,
+    image: 'https://images.unsplash.com/photo-1534665482403-a909d0d97c67?w=400&h=400&fit=crop',
+    description: 'Up-to-date JavaScript guide covering ES6+, async/await, frameworks, and modern development practices.',
+    inStock: true,
+  },
+  {
+    id: 'bm-5', name: 'Watercolor Paint Set 24', slug: 'watercolor-paint-set',
+    price: 449, originalPrice: 649, category: 'Books & Media',
+    tags: ['stationery', 'art', 'painting', 'creative', 'gift'],
+    rating: 4.3, reviews: 178, featured: false,
+    image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=400&fit=crop',
+    description: 'Professional 24-color watercolor set with brush, palette, and tutorial guide. Vibrant, lightfast pigments.',
+    inStock: true,
+  },
+  {
+    id: 'bm-6', name: 'Wooden Chess Set', slug: 'wooden-chess-set',
+    price: 899, originalPrice: 1299, category: 'Books & Media',
+    tags: ['games', 'chess', 'classic', 'gift', 'premium'],
+    rating: 4.7, reviews: 167, featured: false,
+    image: 'https://images.unsplash.com/photo-1529699211955-0340e2a0f9d1?w=400&h=400&fit=crop',
+    description: 'Handcrafted wooden chess set with foldable board, weighted pieces, and storage compartment.',
+    inStock: true,
+  },
+  {
+    id: 'bm-7', name: 'Mindfulness Journal', slug: 'mindfulness-journal',
+    price: 349, originalPrice: 499, category: 'Books & Media',
+    tags: ['stationery', 'journal', 'wellness', 'gift', 'minimal'],
+    rating: 4.6, reviews: 789, featured: true,
+    image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?w=400&h=400&fit=crop',
+    description: 'Guided mindfulness journal with daily prompts, gratitude sections, and mood tracking. 200 pages.',
+    inStock: true,
+  },
+  {
+    id: 'bm-8', name: 'Bluetooth Turntable', slug: 'bluetooth-turntable',
+    price: 4999, originalPrice: 6499, category: 'Books & Media',
+    tags: ['music', 'vinyl', 'bluetooth', 'premium', 'audio'],
+    rating: 4.4, reviews: 123, featured: true,
+    image: 'https://images.unsplash.com/photo-1595079676336-1536f5b1a98b?w=400&h=400&fit=crop',
+    description: 'Modern turntable with Bluetooth output, built-in speakers, and USB recording. Plays 33⅓ and 45 RPM.',
+    inStock: true,
+  },
+
+  // ── Sports & Outdoors (6) ──
+  {
+    id: 'so-1', name: 'Yoga Mat Premium', slug: 'yoga-mat-premium',
+    price: 799, originalPrice: 1199, category: 'Sports & Outdoors',
+    tags: ['fitness', 'yoga', 'exercise', 'wellness', 'home'],
+    rating: 4.5, reviews: 678, featured: true,
+    image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=400&fit=crop',
+    description: 'Extra-thick 6mm premium yoga mat with alignment lines. Non-slip surface, eco-friendly TPE material.',
+    inStock: true,
+  },
+  {
+    id: 'so-2', name: 'Resistance Bands Set', slug: 'resistance-bands-set',
+    price: 399, originalPrice: 599, category: 'Sports & Outdoors',
+    tags: ['fitness', 'exercise', 'home', 'portable', 'wellness'],
+    rating: 4.3, reviews: 1234, featured: false,
+    image: 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=400&h=400&fit=crop',
+    description: 'Set of 5 resistance bands with different tension levels. Includes carrying bag and exercise guide.',
+    inStock: true,
+  },
+  {
+    id: 'so-3', name: 'Insulated Water Flask 1L', slug: 'insulated-water-flask',
+    price: 699, originalPrice: 999, category: 'Sports & Outdoors',
+    tags: ['outdoor', 'bottle', 'hiking', 'travel', 'stainless-steel'],
+    rating: 4.7, reviews: 567, featured: false,
+    image: 'https://images.unsplash.com/photo-1570831739435-6601aa3fa4fb?w=400&h=400&fit=crop',
+    description: 'Vacuum insulated 1L water flask. Keeps drinks cold 24h or hot 12h. Powder-coated finish, leak-proof lid.',
+    inStock: true,
+  },
+  {
+    id: 'so-4', name: 'Camping Hammock', slug: 'camping-hammock',
+    price: 1299, originalPrice: 1799, category: 'Sports & Outdoors',
+    tags: ['outdoor', 'camping', 'travel', 'hiking', 'relaxation'],
+    rating: 4.4, reviews: 234, featured: true,
+    image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400&h=400&fit=crop',
+    description: 'Lightweight parachute nylon hammock with tree straps. Holds up to 250kg. Packs into built-in stuff sack.',
+    inStock: true,
+  },
+  {
+    id: 'so-5', name: 'Adjustable Dumbbells', slug: 'adjustable-dumbbells',
+    price: 4999, originalPrice: 6999, category: 'Sports & Outdoors',
+    tags: ['fitness', 'exercise', 'home', 'strength', 'premium'],
+    rating: 4.6, reviews: 345, featured: true,
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=400&fit=crop',
+    description: 'Space-saving adjustable dumbbells from 2kg to 20kg each. Quick-change weight system with ergonomic handle.',
+    inStock: true,
+  },
+  {
+    id: 'so-6', name: 'Hiking Backpack 40L', slug: 'hiking-backpack-40l',
+    price: 2199, originalPrice: 2999, category: 'Sports & Outdoors',
+    tags: ['outdoor', 'backpack', 'hiking', 'travel', 'camping'],
+    rating: 4.5, reviews: 456, featured: false,
+    image: 'https://images.unsplash.com/photo-1622260614153-03223fb72052?w=400&h=400&fit=crop',
+    description: '40L hiking backpack with rain cover, hydration sleeve, and ergonomic suspension system.',
+    inStock: true,
+  },
+
+  // ── Beauty & Personal Care (6) ──
+  {
+    id: 'bp-1', name: 'Organic Face Serum', slug: 'organic-face-serum',
+    price: 599, originalPrice: 899, category: 'Beauty',
+    tags: ['skincare', 'serum', 'organic', 'vitamin-c', 'face'],
+    rating: 4.6, reviews: 567, featured: true,
+    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&h=400&fit=crop',
+    description: 'Vitamin C brightening face serum with hyaluronic acid. Organic, cruelty-free, and suitable for all skin types.',
+    inStock: true,
+  },
+  {
+    id: 'bp-2', name: 'Essential Oil Diffuser', slug: 'essential-oil-diffuser',
+    price: 899, originalPrice: 1299, category: 'Beauty',
+    tags: ['aromatherapy', 'diffuser', 'wellness', 'home', 'relaxation'],
+    rating: 4.4, reviews: 345, featured: false,
+    image: 'https://images.unsplash.com/photo-1602928298849-325cec8771c0?w=400&h=400&fit=crop',
+    description: 'Ultrasonic essential oil diffuser with LED mood lighting. Covers up to 300 sq ft. Auto shut-off feature.',
+    inStock: true,
+  },
+  {
+    id: 'bp-3', name: 'Hair Dryer Professional', slug: 'hair-dryer-professional',
+    price: 1499, originalPrice: 2199, category: 'Beauty',
+    tags: ['hair', 'dryer', 'professional', 'beauty', 'premium'],
+    rating: 4.5, reviews: 234, featured: true,
+    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=400&fit=crop',
+    description: 'Professional ionic hair dryer with 3 heat settings, diffuser, and concentrator nozzle. 1800W power.',
+    inStock: true,
+  },
+  {
+    id: 'bp-4', name: 'Natural Lip Balm Set', slug: 'natural-lip-balm-set',
+    price: 249, originalPrice: 399, category: 'Beauty',
+    tags: ['skincare', 'lip', 'organic', 'gift', 'natural'],
+    rating: 4.3, reviews: 890, featured: false,
+    image: 'https://images.unsplash.com/photo-1599733589046-10c7f0f8e3e6?w=400&h=400&fit=crop',
+    description: 'Set of 4 natural lip balms in flavors: coconut, vanilla, mint, and berry. Beeswax-based, moisturizing.',
+    inStock: true,
+  },
+  {
+    id: 'bp-5', name: 'Grooming Kit Travel', slug: 'grooming-kit-travel',
+    price: 699, originalPrice: 999, category: 'Beauty',
+    tags: ['grooming', 'travel', 'kit', 'beauty', 'accessories'],
+    rating: 4.2, reviews: 567, featured: false,
+    image: 'https://images.unsplash.com/photo-1598803661568-1da6ba6e50f7?w=400&h=400&fit/crop',
+    description: 'Premium travel grooming kit with leather case. Includes razor, comb, nail clipper, scissors, and tweezers.',
+    inStock: true,
+  },
+  {
+    id: 'bp-6', name: 'Spa Bathrobe', slug: 'spa-bathrobe',
+    price: 1799, originalPrice: 2499, category: 'Beauty',
+    tags: ['wellness', 'bathrobe', 'spa', 'comfort', 'premium'],
+    rating: 4.7, reviews: 345, featured: true,
+    image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&h=400&fit=crop',
+    description: 'Plush microfiber spa bathrobe with hood and pockets. Lightweight, quick-drying, and ultra-absorbent.',
+    inStock: true,
+  },
+];
+
+// ── Helpers ──
+export function getProductById(id) { return products.find(p => p.id === id) || null; }
+export function getProductBySlug(slug) { return products.find(p => p.slug === slug) || null; }
+export function getFeaturedProducts() { return products.filter(p => p.featured); }
+export function getProductsByCategory(category) { return products.filter(p => p.category === category); }
+export function getCategories() { return [...new Set(products.map(p => p.category))]; }
+export function getPriceRange() {
+  const prices = products.map(p => p.price);
+  return { min: Math.min(...prices), max: Math.max(...prices) };
+}
+
+export function getRelatedProducts(product, limit = 4) {
+  if (!product) return [];
+  return products
+    .filter(p => p.id !== product.id)
+    .map(p => ({ ...p, _score: p.tags.filter(t => product.tags.includes(t)).length }))
+    .sort((a, b) => b._score - a._score)
+    .slice(0, limit);
+}
+
+export function getRecommendations(viewedIds = [], limit = 6) {
+  const viewedProducts = products.filter(p => viewedIds.includes(p.id));
+  const tagScores = {};
+  viewedProducts.forEach(p => p.tags.forEach(t => { tagScores[t] = (tagScores[t] || 0) + 1; }));
+  if (viewedIds.length === 0) return getFeaturedProducts().slice(0, limit);
+  return products
+    .filter(p => !viewedIds.includes(p.id))
+    .map(p => ({ ...p, _score: p.tags.reduce((sum, t) => sum + (tagScores[t] || 0), 0) }))
+    .sort((a, b) => b._score - a._score)
+    .slice(0, limit);
+}
+
+export function formatPrice(price) {
+  return `₹${price.toLocaleString('en-IN')}`;
+}
+
+export default products;
