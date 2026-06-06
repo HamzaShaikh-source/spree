@@ -54,11 +54,10 @@ export default function RootLayout({ children }) {
               <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-400">
                 <p>© 2026 Spree. All rights reserved.</p>
                 <div className="flex items-center gap-4">
+                  <a href="https://github.com/HamzaShaikh-source" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition font-medium">GitHub</a>
+                  <a href="https://www.linkedin.com/in/hamza-shaikh-00a9a7412" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition font-medium">LinkedIn</a>
                   <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">Instagram</a>
                   <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">Facebook</a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">X</a>
-                  <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">YouTube</a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-600 transition">LinkedIn</a>
                 </div>
               </div>
             </div>
