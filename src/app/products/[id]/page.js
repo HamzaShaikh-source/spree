@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import products, { getProductBySlug, getRelatedProducts, formatPrice } from '@/data/products';
 import Recommendations from '@/components/Recommendations';
+import ShareButton from '@/components/ShareButton';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -73,7 +74,10 @@ export default function ProductDetailPage() {
         {/* Info */}
         <div>
           <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">{product.category}</span>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{product.name}</h1>
+          <div className="flex items-center justify-between gap-2">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">{product.name}</h1>
+            <ShareButton title={`${product.name} - Spree`} />
+          </div>
 
           <div className="flex items-center gap-2 mt-2">
             <span className="text-yellow-500 text-sm">{'★'.repeat(Math.round(product.rating))}{product.rating % 1 ? '½' : ''}</span>

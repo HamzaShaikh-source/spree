@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 import ProductCard from '@/components/ProductCard';
 import products, { getCategories, getPriceRange, formatPrice } from '@/data/products';
 import Link from 'next/link';
+import ImageSearch from '@/components/ImageSearch';
 
 export default function ProductsPage() {
   const categories = getCategories();
@@ -14,6 +15,7 @@ export default function ProductsPage() {
   const [priceMin, setPriceMin] = useState(priceRange.min);
   const [priceMax, setPriceMax] = useState(priceRange.max);
   const [minRating, setMinRating] = useState(0);
+  const [showImageSearch, setShowImageSearch] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   // Read URL params on mount
@@ -96,9 +98,17 @@ export default function ProductsPage() {
         {/* Sidebar */}
         <aside className="md:w-56 shrink-0">
           <div className="mb-4">
-            <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-              placeholder="Search..." className="w-full pl-3 pr-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+            <div className="flex gap-2">
+              <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search..." className="flex-1 px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+              <button onClick={() => setShowImageSearch(!showImageSearch)}
+                className={`px-2.5 py-2 rounded-lg text-sm border transition ${showImageSearch ? 'bg-indigo-100 border-indigo-300 text-indigo-600' : 'bg-gray-100 border-gray-200 text-gray-500 hover:bg-gray-200'}`}
+                title="Search by image">
+                📷
+              </button>
+            </div>
           </div>
+          {showImageSearch && <div className="mb-4"><ImageSearch onClose={() => setShowImageSearch(false)} /></div>}
           <h3 className="font-bold text-gray-900 text-xs uppercase tracking-wider mb-2">Category</h3>
           <div className="space-y-0.5 mb-5">
             <button onClick={() => setSelectedCat('')}
