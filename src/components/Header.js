@@ -185,7 +185,13 @@ export default function Header() {
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
                     placeholder={t('search')}
-                    className="w-full pl-9 pr-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none" />
+                    className="w-full pl-9 pr-10 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none" />
+                  <button type="button" onClick={startVoiceSearch}
+                    className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 rounded-full transition ${
+                      listening ? 'bg-red-500 text-white' : 'text-gray-400 hover:text-indigo-600'
+                    }`}>
+                    <Mic className="w-4 h-4" />
+                  </button>
                 </div>
               </form>
               <Link href="/" className="block px-3 py-2 text-sm text-gray-700 hover:bg-indigo-50 rounded-lg" onClick={() => setMenuOpen(false)}>Home</Link>
