@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import { Search, Mic, ShoppingCart, User, Menu, X, ChevronDown, Sparkles, Package } from 'lucide-react';
 import { getCategories } from '@/data/products';
 import { useLanguage } from '@/context/LanguageContext';
 import LoginModal from './LoginModal';
@@ -32,8 +33,7 @@ export default function Header() {
     update();
     window.addEventListener('cart-update', update);
     window.addEventListener('storage', update);
-    
-    // Get user from Supabase (safe)
+
     if (supabase?.auth) {
       supabase.auth.getSession().then(({ data }) => {
         if (data?.session?.user) setUser(data.session.user);
@@ -45,10 +45,14 @@ export default function Header() {
         return () => {
           window.removeEventListener('cart-update', update);
           window.removeEventListener('storage', update);
-          try { listener?.subscription?.unsubscribe(); } catch(e) {}
+          try { listener?.subscription?.unsubscribe(); } catch (e) {}
         };
-      } catch(e) {}
+      } catch (e) {}
     }
+    return () => {
+      window.removeEventListener('cart-update', update);
+      window.removeEventListener('storage', update);
+    };
   }, []);
 
   const handleSearch = (e) => {
@@ -74,7 +78,6 @@ export default function Header() {
       const transcript = event.results[0][0].transcript;
       setSearchQuery(transcript);
       setListening(false);
-      // Auto search after voice input
       setTimeout(() => {
         window.location.href = `/products?search=${encodeURIComponent(transcript)}`;
       }, 300);
@@ -87,18 +90,21 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="glass border-b border-black/5 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 gap-3">
+          <div className="flex items-center justify-between h-16 gap-4">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-1.5 shrink-0">
-              <span className="text-lg">✨</span>
-              <span className="font-bold text-base text-gray-900 tracking-tight">{t('brand')}</span>
+            <Link href="/" className="flex items-center gap-2 shrink-0 group">
+              <span className="grid place-items-center w-9 h-9 rounded-xl gradient-brand text-white shadow-soft group-hover:scale-105 transition-transform">
+                <Sparkles className="w-5 h-5" />
+              </span>
+              <span className="font-display font-extrabold text-lg text-ink tracking-tight">{t('brand')}</span>
             </Link>
 
             {/* Search */}
-            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-md relative">
+            <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl relative">
               <div className="relative w-full">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                 <input
                   ref={searchRef}
                   type="text"
@@ -107,24 +113,19 @@ export default function Header() {
                   onFocus={() => setSearchFocused(true)}
                   onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
                   placeholder={t('search')}
-                  className="w-full pl-8 pr-14 py-1.5 bg-gray-100 border border-gray-200 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:bg-white transition"
+                  className="w-full pl-10 pr-12 py-2.5 bg-white/70 border border-black/5 rounded-2xl text-sm text-ink placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:bg-white transition shadow-soft"
                 />
-                <svg className="absolute left-2.5 top-2 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
                 <button type="button" onClick={startVoiceSearch}
-                  className={`absolute right-1 top-1/2 -translate-y-1/2 p-1.5 rounded-full transition ${
-                    listening ? 'bg-red-500 text-white shadow' : 'text-gray-400 hover:text-indigo-600 bg-gray-200 hover:bg-gray-300'
+                  className={`absolute right-1.5 top-1/2 -translate-y-1/2 grid place-items-center w-8 h-8 rounded-xl transition ${
+                    listening ? 'bg-red-500 text-white animate-pulse-ring' : 'text-gray-500 hover:text-brand-600 bg-gray-100 hover:bg-brand-50'
                   }`}
                   title={t('searchVoice')}
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m-4 0h8" />
-                  </svg>
+                  <Mic className="w-4 h-4" />
                 </button>
               </div>
-              <SearchSuggestions 
-                query={searchQuery} 
+              <SearchSuggestions
+                query={searchQuery}
                 isFocused={searchFocused}
                 onSearch={(term) => setSearchQuery(term)}
                 onSubmit={() => {
@@ -136,48 +137,49 @@ export default function Header() {
                   }
                 }}
               />
+              {showVoiceTip && (
+                <span className="absolute -bottom-9 left-0 bg-ink text-white text-xs px-3 py-1.5 rounded-lg shadow-soft animate-fade-in">
+                  Voice search not supported on this browser
+                </span>
+              )}
             </form>
 
             {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-4">
-              <Link href="/" className="text-xs text-gray-600 hover:text-gray-900 font-medium transition">{t('home')}</Link>
+            <nav className="hidden lg:flex items-center gap-1">
+              <Link href="/" className="text-sm text-ink-soft hover:text-brand-600 font-medium px-3 py-2 rounded-lg hover:bg-brand-50 transition">{t('home')}</Link>
               <div className="relative group">
-                <button className="text-xs text-gray-600 hover:text-gray-900 font-medium transition flex items-center gap-0.5">
+                <button className="text-sm text-ink-soft hover:text-brand-600 font-medium px-3 py-2 rounded-lg hover:bg-brand-50 transition flex items-center gap-1">
                   {t('shop')}
-                  <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <ChevronDown className="w-3.5 h-3.5" />
                 </button>
-                <div className="absolute top-full left-0 mt-0.5 bg-white border border-gray-200 rounded-xl shadow-lg py-1.5 min-w-[180px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150">
+                <div className="absolute top-full left-0 mt-1 bg-white border border-black/5 rounded-2xl shadow-soft-lg py-2 min-w-[210px] opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-1 group-hover:translate-y-0 transition-all duration-200">
                   {categories.map(cat => (
                     <a key={cat} href={`/products?category=${encodeURIComponent(cat)}`}
-                      className="block px-4 py-1.5 text-xs text-gray-700 hover:bg-gray-50">{cat}</a>
+                      className="block px-4 py-2 text-sm text-ink-soft hover:bg-brand-50 hover:text-brand-700 transition">{cat}</a>
                   ))}
-                  <div className="border-t border-gray-100 mt-1 pt-1">
-                    <a href="/products" className="block px-4 py-1.5 text-xs font-semibold text-indigo-600 hover:bg-gray-50">{t('viewAll')}</a>
+                  <div className="border-t border-gray-100 mt-1.5 pt-1.5">
+                    <a href="/products" className="block px-4 py-2 text-sm font-semibold text-brand-600 hover:bg-brand-50 transition">{t('viewAll')}</a>
                   </div>
                 </div>
               </div>
-              <Link href="/products" className="text-xs text-gray-600 hover:text-gray-900 font-medium transition">{t('products')}</Link>
+              <Link href="/products" className="text-sm text-ink-soft hover:text-brand-600 font-medium px-3 py-2 rounded-lg hover:bg-brand-50 transition">{t('products')}</Link>
             </nav>
 
             {/* Right */}
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5">
               {/* Language */}
-              <div className="relative">
+              <div className="relative hidden sm:block">
                 <button onClick={() => setLangOpen(!langOpen)}
-                  className="text-xs text-gray-500 hover:text-gray-800 font-semibold px-2 py-1 rounded-lg hover:bg-gray-100 transition flex items-center gap-1">
+                  className="text-xs text-ink-soft hover:text-ink font-semibold px-2.5 py-1.5 rounded-lg hover:bg-gray-100 transition flex items-center gap-1">
                   {lang.toUpperCase()}
-                  <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <ChevronDown className="w-3 h-3" />
                 </button>
                 {langOpen && (
-                  <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg py-1 min-w-[120px] z-50">
+                  <div className="absolute right-0 top-full mt-1.5 bg-white border border-black/5 rounded-2xl shadow-soft-lg py-1.5 min-w-[130px] z-50 animate-scale-in origin-top-right">
                     {LANGUAGES.map(l => (
                       <button key={l.code} onClick={() => { changeLang(l.code); setLangOpen(false); }}
-                        className={`block w-full text-left px-3 py-1.5 text-xs transition ${
-                          lang === l.code ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'
+                        className={`block w-full text-left px-3.5 py-2 text-sm transition ${
+                          lang === l.code ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-ink-soft hover:bg-gray-50'
                         }`}>
                         {l.native}
                       </button>
@@ -186,62 +188,63 @@ export default function Header() {
                 )}
               </div>
 
+              {/* Orders */}
+              <Link href="/orders" className="hidden sm:grid place-items-center w-10 h-10 rounded-xl text-ink-soft hover:text-brand-600 hover:bg-brand-50 transition" title="My Orders">
+                <Package className="w-5 h-5" />
+              </Link>
+
               {/* Login */}
               <button onClick={() => setLoginOpen(true)}
-                className="text-xs text-gray-600 hover:text-gray-900 font-medium px-2 py-1 rounded-lg hover:bg-gray-100 transition">
-                {user ? (user.user_metadata?.full_name || user.email?.split('@')[0] || 'User') : t('login')}
+                className="flex items-center gap-1.5 text-sm text-ink-soft hover:text-brand-600 font-medium px-2.5 py-1.5 rounded-xl hover:bg-brand-50 transition">
+                <User className="w-5 h-5" />
+                <span className="hidden md:inline max-w-[90px] truncate">
+                  {user ? (user.user_metadata?.full_name || user.email?.split('@')[0] || 'User') : t('login')}
+                </span>
               </button>
 
               {/* Cart */}
-              <Link href="/cart" className="relative p-1.5 text-gray-600 hover:text-gray-900 transition">
-                <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" />
-                </svg>
+              <Link href="/cart" className="relative grid place-items-center w-10 h-10 rounded-xl text-ink-soft hover:text-brand-600 hover:bg-brand-50 transition">
+                <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-indigo-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                    {cartCount > 99 ? '99' : cartCount}
+                  <span className="absolute top-0.5 right-0.5 gradient-brand text-white text-[10px] font-bold min-w-[18px] h-[18px] px-1 rounded-full flex items-center justify-center shadow animate-scale-in">
+                    {cartCount > 99 ? '99+' : cartCount}
                   </span>
                 )}
               </Link>
 
               {/* Mobile menu */}
-              <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden p-1.5 text-gray-600">
-                <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  {menuOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
-                </svg>
+              <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden grid place-items-center w-10 h-10 rounded-xl text-ink-soft hover:bg-gray-100 transition">
+                {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
 
           {/* Mobile menu */}
           {menuOpen && (
-            <div className="md:hidden border-t border-gray-100 py-2 space-y-1">
-              <form onSubmit={handleSearch} className="px-2 pb-2">
+            <div className="lg:hidden border-t border-black/5 py-3 space-y-1 animate-fade-in-up">
+              <form onSubmit={handleSearch} className="px-1 pb-2">
                 <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
                     placeholder={t('search')}
-                    className="w-full pl-8 pr-8 py-1.5 bg-gray-100 border border-gray-200 rounded-lg text-xs focus:outline-none" />
-                  <svg className="absolute left-2.5 top-1.5 w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
+                    className="w-full pl-9 pr-10 py-2.5 bg-gray-100 border border-black/5 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
                   <button type="button" onClick={startVoiceSearch}
-                    className={`absolute right-1.5 top-1/2 -translate-y-1/2 p-0.5 ${listening ? 'text-red-500' : 'text-gray-400'}`}>
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m-4 0h8" />
-                    </svg>
+                    className={`absolute right-2 top-1/2 -translate-y-1/2 p-1 ${listening ? 'text-red-500' : 'text-gray-400'}`}>
+                    <Mic className="w-4 h-4" />
                   </button>
                 </div>
               </form>
-              <Link href="/" className="block px-2 py-1.5 text-xs text-gray-700" onClick={() => setMenuOpen(false)}>{t('home')}</Link>
-              <div className="px-2 py-1">
-                <p className="text-[10px] text-gray-400 uppercase tracking-wider font-semibold mb-0.5">{t('categories')}</p>
+              <Link href="/" className="block px-3 py-2.5 text-sm font-medium text-ink-soft rounded-xl hover:bg-brand-50" onClick={() => setMenuOpen(false)}>{t('home')}</Link>
+              <div className="px-3 py-1">
+                <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold mb-1">{t('categories')}</p>
                 {categories.map(cat => (
                   <Link key={cat} href={`/products?category=${encodeURIComponent(cat)}`}
-                    className="block py-1 text-xs text-gray-600 hover:text-gray-900"
+                    className="block py-2 text-sm text-ink-soft hover:text-brand-600"
                     onClick={() => setMenuOpen(false)}>{cat}</Link>
                 ))}
               </div>
-              <Link href="/products" className="block px-2 py-1.5 text-xs text-indigo-600 font-semibold" onClick={() => setMenuOpen(false)}>{t('viewAll')}</Link>
+              <Link href="/orders" className="block px-3 py-2.5 text-sm font-medium text-ink-soft rounded-xl hover:bg-brand-50" onClick={() => setMenuOpen(false)}>My Orders</Link>
+              <Link href="/products" className="block px-3 py-2.5 text-sm text-brand-600 font-semibold rounded-xl hover:bg-brand-50" onClick={() => setMenuOpen(false)}>{t('viewAll')}</Link>
             </div>
           )}
         </div>
