@@ -2,6 +2,7 @@ import './globals.css';
 import { LanguageProvider } from '@/context/LanguageContext';
 import Header from '@/components/Header';
 import FloatingElements from './FloatingElements';
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata = {
   title: 'Spree - Discover What You Love',
@@ -68,6 +69,7 @@ export default function RootLayout({ children }) {
           </footer>
           <FloatingElements />
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   );
