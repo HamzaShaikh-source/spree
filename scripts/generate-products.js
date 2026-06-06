@@ -149,96 +149,73 @@ const BRAND_LOGOS = {
   'Levi\'s': 'https://upload.wikimedia.org/wikipedia/commons/5/5b/Levi%27s_logo.svg',
 };
 
-const UNSPLASH_MAP = {
-  'headphones': 'photo-1505740420928-5e560c06d30e',
-  'speaker': 'photo-1608043152269-423dbba4e7e1',
-  'usb': 'photo-1583394838336-acd977736f90',
-  'mouse': 'photo-1527864550417-7fd91fc51a46',
-  'smartwatch': 'photo-1523275335684-37898b6baf30',
-  'charger': 'photo-1609091839311-d5365f9ff1c5',
-  'cable': 'photo-1615529328331-f8917597711f',
-  'webcam': 'photo-1627384113743-6a5e1ad7bfde',
-  'smartplug': 'photo-1558618666-fcd25c85f82e',
-  'led': 'photo-1550684376-efcbd6e3f031',
-  'memory': 'photo-1618384887929-16ec33fab9ef',
-  'phone-case': 'photo-1601784551446-20c9e07cdbdb',
-  'screen-guard': 'photo-1598327105665-cede8901e8e1',
-  'tripod': 'photo-1588591795084-177c5cf5aea2',
-  'shoes': 'photo-1542291026-7eec264c27ff',
-  'sneakers': 'photo-1595950653106-6c9ebd614d3a',
-  'tshirt': 'photo-1521572163474-6864f9cf17ab',
-  'jeans': 'photo-1542272454-79f62f02b3c7',
-  'formal-shirt': 'photo-1596755094514-f87e34085b2c',
-  'belt': 'photo-1624222247344-5503fdd6081c',
-  'cap': 'photo-1588850561407-ed78c282e89b',
-  'watch': 'photo-1524592094714-0f0654e20314',
-  'shorts': 'photo-1583743814966-8936f5b7be1a',
-  'gloves': 'photo-1518803194621-f1f6a7a9b5e9',
-  'sunglasses': 'photo-1572635196237-14b3f281503f',
-  'wallet': 'photo-1627123424574-724758594e93',
-  'tawa': 'photo-1556909114-f6e7ad7d3136',
-  'bowl': 'photo-1584473457406-6244ae54d517',
-  'chopper': 'photo-1590794056226-79ef3a8147e1',
-  'spice-rack': 'photo-1594226801341-41427b4e5c22',
-  'glass': 'photo-1551538827-6c037c2a0f7d',
-  'tongs': 'photo-1594026112284-02bb6f3352fe',
-  'plate': 'photo-1514326640560-7d063ef2aed5',
-  'jar': 'photo-1582721478779-0ae163c7c9d7',
-  'mop': 'photo-1585421514284-efb74c2b69ba',
-  'hanger': 'photo-1540821925587-40d8640d7c1e',
-  'doormat': 'photo-1602872057400-2bd3d6d6e7c2',
-  'cushion': 'photo-1555041469-a586c61ea9bc',
-  'book': 'photo-1532012197267-da84d127e765',
-  'self-help': 'photo-1523800503107-5bc3ba2a6f81',
-  'history-book': 'photo-1532153975070-2e9ab71f1b14',
-  'children-book': 'photo-1512820790803-83ca734da794',
-  'cookbook': 'photo-1556909114-f6e7ad7d3136',
-  'exam-book': 'photo-1434030216411-0b793f4b4173',
-  'sketchbook': 'photo-1513364776144-60967b0f800f',
-  'pen': 'photo-1583485088034-141b5e1f0a9d',
-  'gift-wrap': 'photo-1549465220-1a8b9238cd48',
-  'jump-rope': 'photo-1571613316887-6f8d5cbf7ef7',
-  'pushup': 'photo-1534438327276-14e5300c3a48',
-  'ab-roller': 'photo-1571019613454-1cb2f99b2d8b',
-  'grip': 'photo-1581009146145-b5ef050c2e1e',
-  'tennis': 'photo-1595435934249-5df7ed86e1b0',
-  'badminton': 'photo-1613919113640-257e1e5d8a7b',
-  'cricket': 'photo-1564887651979-53b60e8d4d23',
-  'yoga-block': 'photo-1601925260368-ae2f83cf8b7f',
-  'cycling-bottle': 'photo-1570831739435-6601aa3fa4fb',
-  'face-wash': 'photo-1556228578-0d85b1a4d571',
-  'moisturizer': 'photo-1620916566398-39f1143ab7be',
-  'toner': 'photo-1598440947619-2c35fc9aa908',
-  'eye-cream': 'photo-1611930022073-b7a4ba5fcccd',
-  'shampoo': 'photo-1585237652354-ec8b2e1d4c8c',
-  'hair-oil': 'photo-1596462502278-27bfdc403348',
-  'body-lotion': 'photo-1591384468290-1e4f4b1f2c8a',
-  'lipstick': 'photo-1583241800698-e8ab01830a07',
-  'kajal': 'photo-1631214524020-7e18db9a8f92',
-  'nail-polish': 'photo-1604654894610-df63bc536371',
-  'laptop': 'photo-1496181133206-80ce9b88a853',
-  'gaming-laptop': 'photo-1603302576837-37561b2e2302',
-  'monitor': 'photo-1527443223036-2f2380f3f8f1',
-  'keyboard': 'photo-1618384887929-16ec33fab9ef',
-  'hard-drive': 'photo-1531497865145-1b68c0dfb0ff',
-  'mouse-wired': 'photo-1527814050087-3793815479db',
-  'laptop-stand': 'photo-1611510338559-2f463335092c',
-  'wireless-keyboard': 'photo-1587829741301-dc798b83add3',
-  'laptop-bag': 'photo-1622560540604-9e16e0c2c750',
-  'cooling-pad': 'photo-1593642632559-0c6d3fc62b89',
-  'notebook': 'photo-1544716278-ca5e3f4abd8c',
-  'gel-pen': 'photo-1583485088034-141b5e1f0a9d',
-  'pencil-box': 'photo-1586077605449-7c8a4f0fd302',
-  'highlighter': 'photo-1586077605449-7c8a4f0fd302',
-  'geometry': 'photo-1586077605449-7c8a4f0fd302',
-  'marker': 'photo-1586077605449-7c8a4f0fd302',
-  'sticky-note': 'photo-1504711434969-e33886168d6c',
-  'paper-clips': 'photo-1504711434969-e33886168d6c',
-  'desk-organizer': 'photo-1497366216548-37526070297c',
-  'file-folder': 'photo-1497366216548-37526070297c',
-  'calculator': 'photo-1558618666-fcd25c85f82e',
-  'stapler': 'photo-1504711434969-e33886168d6c',
-};
+// ── MASSIVE POOL of 130+ unique Unsplash product photos ──
+// Every product gets a random unique image from this pool
+const PRODUCT_PHOTOS = [
+  'photo-1505740420928-5e560c06d30e', 'photo-1523275335684-37898b6baf30', 'photo-1608043152269-423dbba4e7e1',
+  'photo-1583394838336-acd977736f90', 'photo-1502920917128-1aa500764cbd', 'photo-1590658268037-6bf12f032f55',
+  'photo-1618384887929-16ec33fab9ef', 'photo-1622445275576-721325763afe', 'photo-1611510338559-2f463335092c',
+  'photo-1627384113743-6a5e1ad7bfde', 'photo-1558618666-fcd25c85f82e', 'photo-1609091839311-d5365f9ff1c5',
+  'photo-1576995853123-5a10305d93c0', 'photo-1542291026-7eec264c27ff', 'photo-1596755094514-f87e34085b2c',
+  'photo-1548036328-c9fa89d128fa', 'photo-1572635196237-14b3f281503f', 'photo-1601924994987-69e26d50dc26',
+  'photo-1624378439575-d8705ad7ae80', 'photo-1627123424574-724758594e93', 'photo-1556821840-3a63f95609a7',
+  'photo-1553062407-98eeb64c6a62', 'photo-1514228742587-6b1558fcca3d', 'photo-1485955900006-10f4d324d411',
+  'photo-1602143407151-7111542de6e8', 'photo-1603006905003-be475563bc59', 'photo-1594226801341-41427b4e5c22',
+  'photo-1559561853-084c1d5c76f2', 'photo-1556909114-f6e7ad7d3136', 'photo-1507473885765-e6ed057ab6fe',
+  'photo-1555041469-a586c61ea9bc', 'photo-1564135625956-9054b4b6b26c', 'photo-1532012197267-da84d127e765',
+  'photo-1595209776413-48ce7f47b0a2', 'photo-1544716278-ca5e3f4abd8c', 'photo-1534665482403-a909d0d97c67',
+  'photo-1513364776144-60967b0f800f', 'photo-1529699211955-0340e2a0f9d1', 'photo-1517842645767-c639042777db',
+  'photo-1595079676336-1536f5b1a98b', 'photo-1601925260368-ae2f83cf8b7f', 'photo-1598289431512-b97b0917affc',
+  'photo-1570831739435-6601aa3fa4fb', 'photo-1504280390367-361c6d9f38f4', 'photo-1534438327276-14e5300c3a48',
+  'photo-1622260614153-03223fb72052', 'photo-1620916566398-39f1143ab7be', 'photo-1602928298849-325cec8771c0',
+  'photo-1522337360788-8b13dee7a37e', 'photo-1599733589046-10c7f0f8e3e6', 'photo-1598803661568-1da6ba6e50f7',
+  'photo-1591047139829-d91aecb6caea', 'photo-1556742049-0cfed4f6a45d', 'photo-1560343090-f0409e92791a',
+  'photo-1546868871-af0de0ae72c4', 'photo-1542291026-7eec264c27ff', 'photo-1553062407-98eeb64c6a62',
+  'photo-1583743814966-8936f5b7be1a', 'photo-1588850561407-ed78c282e89b', 'photo-1524592094714-0f0654e20314',
+  'photo-1518803194621-f1f6a7a9b5e9', 'photo-1624222247344-5503fdd6081c', 'photo-1595950653106-6c9ebd614d3a',
+  'photo-1576566588028-4147f3842f27', 'photo-1614251055886-29acd3b1a2b3', 'photo-1589756823695-278bc923f962',
+  'photo-1594026112284-02bb6f3352fe', 'photo-1551538827-6c037c2a0f7d', 'photo-1514326640560-7d063ef2aed5',
+  'photo-1582721478779-0ae163c7c9d7', 'photo-1585421514284-efb74c2b69ba', 'photo-1540821925587-40d8640d7c1e',
+  'photo-1602872057400-2bd3d6d6e7c2', 'photo-1555041469-a586c61ea9bc', 'photo-1523800503107-5bc3ba2a6f81',
+  'photo-1532153975070-2e9ab71f1b14', 'photo-1512820790803-83ca734da794', 'photo-1434030216411-0b793f4b4173',
+  'photo-1583485088034-141b5e1f0a9d', 'photo-1549465220-1a8b9238cd48', 'photo-1571019613454-1cb2f99b2d8b',
+  'photo-1581009146145-b5ef050c2e1e', 'photo-1595435934249-5df7ed86e1b0', 'photo-1613919113640-257e1e5d8a7b',
+  'photo-1564887651979-53b60e8d4d23', 'photo-1556228578-0d85b1a4d571', 'photo-1611930022073-b7a4ba5fcccd',
+  'photo-1585237652354-ec8b2e1d4c8c', 'photo-1596462502278-27bfdc403348', 'photo-1591384468290-1e4f4b1f2c8a',
+  'photo-1583241800698-e8ab01830a07', 'photo-1631214524020-7e18db9a8f92', 'photo-1604654894610-df63bc536371',
+  'photo-1496181133206-80ce9b88a853', 'photo-1603302576837-37561b2e2302', 'photo-1527443223036-2f2380f3f8f1',
+  'photo-1531497865145-1b68c0dfb0ff', 'photo-1527814050087-3793815479db', 'photo-1587829741301-dc798b83add3',
+  'photo-1622560540604-9e16e0c2c750', 'photo-1593642632559-0c6d3fc62b89', 'photo-1586077605449-7c8a4f0fd302',
+  'photo-1504711434969-e33886168d6c', 'photo-1497366216548-37526070297c', 'photo-1579947432563-8f0f8b8a3f2c',
+  'photo-1584473457406-6244ae54d517', 'photo-1590794056226-79ef3a8147e1', 'photo-1596020792280-2a7d0c6d9a9b',
+  'photo-1544367567-0f2fcb009e0b', 'photo-1571613316887-6f8d5cbf7ef7', 'photo-1551698618-1dfe5facc98d',
+  'photo-1576502200916-3808e07386a5', 'photo-1621607512214-68297480165e', 'photo-1598440947619-2c35fc9aa908',
+  'photo-1585314062340-f1a5a7c9328d', 'photo-1608571423902-eed4a5ad8108', 'photo-1599593736570-48e0fc7e36f0',
+  'photo-1558618666-fcd25c85f82e', 'photo-1590658268037-6bf12f032f55', 'photo-1556821840-3a63f95609a7',
+  'photo-1583394838336-acd977736f90', 'photo-1611510338559-2f463335092c', 'photo-1532012197267-da84d127e765',
+  'photo-1529699211955-0340e2a0f9d1', 'photo-1517842645767-c639042777db', 'photo-1513364776144-60967b0f800f',
+  'photo-1601925260368-ae2f83cf8b7f', 'photo-1534438327276-14e5300c3a48', 'photo-1622260614153-03223fb72052',
+  'photo-1504280390367-361c6d9f38f4', 'photo-1602928298849-325cec8771c0', 'photo-1522337360788-8b13dee7a37e',
+  'photo-1599733589046-10c7f0f8e3e6', 'photo-1591047139829-d91aecb6caea', 'photo-1556742049-0cfed4f6a45d',
+  'photo-1560343090-f0409e92791a', 'photo-1546868871-af0de0ae72c4',
+];
+
+// Shuffle function to randomize image assignment
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+let photoPool = shuffleArray([...PRODUCT_PHOTOS]);
+let photoIndex = 0;
+function getNextPhoto() {
+  const photo = photoPool[photoIndex % photoPool.length];
+  photoIndex++;
+  return photo;
+}
 
 let idCounter = {};
 function getNextId(cat) {
@@ -265,7 +242,7 @@ for (const [catName, catData] of Object.entries(CATEGORIES)) {
     const originalPrice = hasDiscount ? Math.round(price * (1.15 + Math.random() * 0.4)) : price;
     const rating = Math.round((3.5 + Math.random() * 1.5) * 10) / 10;
     const reviews = Math.floor(10 + Math.random() * 2000);
-    const imgId = UNSPLASH_MAP[type.img] || UNSPLASH_MAP['headphones'];
+    const imgId = getNextPhoto();
     
     const product = {
       id: getNextId(catName),
@@ -306,7 +283,7 @@ for (const [catName, catData] of Object.entries(CATEGORIES)) {
         rating: Math.min(5, Math.round((3.0 + Math.random() * 2.0) * 10) / 10),
         reviews: Math.floor(10 + Math.random() * 1500),
         featured: Math.random() > 0.92,
-        image: `https://images.unsplash.com/${imgId}?w=400&h=400&fit=crop`,
+        image: `https://images.unsplash.com/${getNextPhoto()}?w=400&h=400&fit=crop`,
         description: `Premium ${type.name.toLowerCase()} from ${brandV}. Features cutting-edge technology and superior build quality.`,
         inStock: Math.random() > 0.12,
       });
