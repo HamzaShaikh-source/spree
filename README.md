@@ -6,9 +6,7 @@
 
 ## 🚀 Live Demo
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/HamzaShaikh-source/spree)
-
-👉 **Live Site:** `https://spree.vercel.app` *(deploy yours to get a URL)*
+👉 **Live Site:** *(deployed privately)*
 
 ---
 
@@ -153,25 +151,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 npm run build
 npm start
 ```
-
----
-
-## 🌐 Deploy to Vercel (Recommended)
-
-### One-Click Deploy
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/HamzaShaikh-source/spree)
-
-### Manual Deploy
-
-1. Push this repo to your GitHub account
-2. Go to [vercel.com](https://vercel.com) and sign up/log in
-3. Click **"Add New → Project"**
-4. Import the `spree` repository
-5. **Framework** will auto-detect as **Next.js**
-6. Click **"Deploy"** — that's it!
-
-Your site will be live at `https://spree-xxxxx.vercel.app` in ~2 minutes.
 
 ---
 
