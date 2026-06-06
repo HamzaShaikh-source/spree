@@ -33,19 +33,22 @@ export default function Header() {
     window.addEventListener('cart-update', update);
     window.addEventListener('storage', update);
     
-    // Get user from Supabase
-    supabase.auth.getSession().then(({ data }) => {
-      if (data?.session?.user) setUser(data.session.user);
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-    
-    return () => {
-      window.removeEventListener('cart-update', update);
-      window.removeEventListener('storage', update);
-      listener?.subscription?.unsubscribe();
-    };
+    // Get user from Supabase (safe)
+    if (supabase?.auth) {
+      supabase.auth.getSession().then(({ data }) => {
+        if (data?.session?.user) setUser(data.session.user);
+      }).catch(() => {});
+      try {
+        const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+          setUser(session?.user || null);
+        });
+        return () => {
+          window.removeEventListener('cart-update', update);
+          window.removeEventListener('storage', update);
+          try { listener?.subscription?.unsubscribe(); } catch(e) {}
+        };
+      } catch(e) {}
+    }
   }, []);
 
   const handleSearch = (e) => {
