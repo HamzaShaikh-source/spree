@@ -16,70 +16,19 @@ export default function LoginModal({ isOpen, onClose }) {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data?.session?.user) setUser(data.session.user);
+      if (data?.session?.user) {
+        setUser(data.session.user);
+        onClose?.();
+      }
     });
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
+      if (session?.user) onClose?.();
     });
     return () => listener?.subscription?.unsubscribe();
   }, []);
 
-  const handleEmailAuth = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      if (mode === 'signup') {
-        const { data, error: signUpError } = await supabase.auth.signUp({
-          email, password,
-          options: { data: { full_name: name } }
-        });
-        if (signUpError) throw signUpError;
-        if (data?.user) {
-          await supabase.from('profiles').upsert({
-            id: data.user.id,
-            name,
-            email: data.user.email,
-          }, { onConflict: 'id' });
-        }
-        setError('✅ Check your email for confirmation link!');
-      } else if (mode === 'login') {
-        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-        if (signInError) throw signInError;
-        onClose?.();
-      } else if (mode === 'forgot') {
-        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + '/?reset=true',
-        });
-        if (resetError) throw resetError;
-        setMode('reset_sent');
-      }
-    } catch (err) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
-
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.origin },
-    });
-    setLoading(false);
-  };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    onClose?.();
-  };
-
-  const resetToLogin = () => { setMode('login'); setError(''); setEmail(''); setPassword(''); };
-  const goToForgot = () => { setMode('forgot'); setError(''); };
-
-  if (!isOpen && !user) return null;
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center">

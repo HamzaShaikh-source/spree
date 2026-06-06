@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { getCategories } from '@/data/products';
 import { useLanguage } from '@/context/LanguageContext';
 import LoginModal from './LoginModal';
+import { supabase } from '@/lib/supabase';
 
 export default function Header() {
   const { t, lang, changeLang, LANGUAGES } = useLanguage();
@@ -25,16 +26,23 @@ export default function Header() {
     const update = () => {
       const cart = JSON.parse(localStorage.getItem('cart') || '[]');
       setCartCount(cart.reduce((s, i) => s + i.qty, 0));
-      setUser(JSON.parse(localStorage.getItem('spree-user') || 'null'));
     };
     update();
     window.addEventListener('cart-update', update);
-    window.addEventListener('user-update', update);
     window.addEventListener('storage', update);
+    
+    // Get user from Supabase
+    supabase.auth.getSession().then(({ data }) => {
+      if (data?.session?.user) setUser(data.session.user);
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+    
     return () => {
       window.removeEventListener('cart-update', update);
-      window.removeEventListener('user-update', update);
       window.removeEventListener('storage', update);
+      listener?.subscription?.unsubscribe();
     };
   }, []);
 
@@ -161,7 +169,7 @@ export default function Header() {
               {/* Login */}
               <button onClick={() => setLoginOpen(true)}
                 className="text-xs text-gray-600 hover:text-gray-900 font-medium px-2 py-1 rounded-lg hover:bg-gray-100 transition">
-                {user ? user.name.split(' ')[0] : t('login')}
+                {user ? (user.user_metadata?.full_name || user.email?.split('@')[0] || 'User') : t('login')}
               </button>
 
               {/* Cart */}
