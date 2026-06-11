@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spree — Premium Editorial E-Commerce & Curated Luxury</title>
+  <meta name="description" content="A scholarly, premium shopping experience presenting dense information made effortless through serif authority and generous whitespace.">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Floating Glassmorphic Navigation -->
+  <nav class="navbar" id="main-navbar">
+    <a href="#/" class="nav-brand" id="logo-link">SPREE</a>
+    
+    <div class="nav-links">
+      <a href="#/" class="nav-link" id="nav-home">Home</a>
+      <a href="#/browse" class="nav-link" id="nav-browse">Browse</a>
+      <a href="#/brands" class="nav-link" id="nav-brands">Brands</a>
+      <a href="#/editorial" class="nav-link" id="nav-editorial">Editorial</a>
+    </div>
+    
+    <div class="nav-actions">
+      <!-- User Profile Link -->
+      <a href="#/profile" class="nav-btn" id="nav-profile-btn" aria-label="User Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      
+      <!-- Cart Trigger Button -->
+      <button class="nav-btn" id="nav-cart-btn" aria-label="Open Shopping Bag">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" id="cart-count-badge">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Router Mount Point -->
+  <main id="app-content"></main>
+
+  <!-- Slide-Out Shopping Bag Sidebar -->
+  <div class="drawer-backdrop" id="cart-drawer-backdrop">
+    <div class="cart-drawer">
+      <div class="drawer-hdr">
+        <h2 class="drawer-title">Shopping Bag</h2>
+        <button class="drawer-close" id="cart-drawer-close" aria-label="Close Shopping Bag">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      
+      <!-- Cart items container -->
+      <div class="drawer-content" id="cart-items-container">
+        <!-- Rendered dynamically in app.js -->
+      </div>
+      
+      <!-- Cart footer -->
+      <div class="drawer-footer">
+        <div class="drawer-summary-row">
+          <span class="drawer-summary-label">Subtotal</span>
+          <span class="drawer-summary-val" id="cart-subtotal-val">$0.00</span>
+        </div>
+        <button class="btn-primary" id="cart-checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Elegant Editorial Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand-section">
+        <div class="nav-brand">SPREE</div>
+        <p class="footer-desc">The Digital Curator. A scholarly, premium curation of high-end fashion and modernist metalwork.</p>
+      </div>
+      
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">Collection</h4>
+        <div class="footer-links-list">
+          <a href="#/browse?category=Outerwear">Outerwear</a>
+          <a href="#/browse?category=Dresses">Dresses</a>
+          <a href="#/browse?category=Knitwear">Knitwear</a>
+          <a href="#/browse?category=Bags">Bags & Accessories</a>
+        </div>
+      </div>
+      
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">Editorial</h4>
+        <div class="footer-links-list">
+          <a href="#/editorial">Trends</a>
+          <a href="#/editorial">Runway Stories</a>
+          <a href="#/brands">Designers</a>
+          <a href="#/editorial">Interviews</a>
+        </div>
+      </div>
+      
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">Customer Care</h4>
+        <div class="footer-links-list">
+          <a href="#/profile">My Account</a>
+          <a href="#/profile">Order Status</a>
+          <a href="#/">Shipping & Duties</a>
+          <a href="#/">Returns & Exchanges</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div>&copy; 2026 SPREE. All rights reserved. Built for Stitch Redesign.</div>
+      <div class="footer-legal-links">
+        <a href="#/">Privacy Policy</a>
+        <a href="#/">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="./products.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
