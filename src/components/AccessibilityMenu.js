@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Accessibility, X, Minus, Plus, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 
 export default function AccessibilityMenu() {
   const [open, setOpen] = useState(false);
@@ -59,49 +60,65 @@ export default function AccessibilityMenu() {
       {/* Floating button */}
       <button
         onClick={() => setOpen(!open)}
-        className="fixed bottom-4 left-4 z-50 w-12 h-12 bg-gray-900 text-white rounded-full shadow-lg hover:bg-gray-700 transition flex items-center justify-center text-lg"
-        aria-label="Accessibility options"
-      >
-        ♿
+        className={`fixed bottom-6 left-6 z-50 w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-2xl ${
+          open
+            ? 'bg-zinc-800 border border-white/10 text-white'
+            : 'glass-card border-white/10 text-zinc-400 hover:border-white/20 hover:text-white hover:scale-105'
+        }`}
+        aria-label="Accessibility options">
+        <Accessibility className="w-5 h-5" />
       </button>
 
       {/* Menu */}
       {open && (
-        <div className="fixed bottom-20 left-4 z-50 bg-white rounded-2xl shadow-2xl border border-gray-200 p-4 w-64">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-bold text-gray-900 text-sm">Accessibility</h3>
-            <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600">&times;</button>
-          </div>
-          <div className="space-y-3">
-            {/* Font size */}
-            <div>
-              <p className="text-xs font-medium text-gray-600 mb-1">Font Size: {fontSize}%</p>
-              <div className="flex gap-2">
-                <button onClick={() => setFontSize(Math.max(70, fontSize - 10))} className="flex-1 px-2 py-1.5 bg-gray-100 rounded-lg text-xs font-bold hover:bg-gray-200 transition">A−</button>
-                <button onClick={() => setFontSize(100)} className="flex-1 px-2 py-1.5 bg-gray-100 rounded-lg text-xs hover:bg-gray-200 transition">Reset</button>
-                <button onClick={() => setFontSize(Math.min(150, fontSize + 10))} className="flex-1 px-2 py-1.5 bg-gray-100 rounded-lg text-xs font-bold hover:bg-gray-200 transition">A+</button>
-              </div>
+        <div className="fixed bottom-24 left-6 z-50 w-64 animate-fadeIn">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d1a] shadow-2xl shadow-black/40 p-4 backdrop-blur-xl">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-bold text-white text-sm">Accessibility</h3>
+              <button onClick={() => setOpen(false)} className="text-zinc-500 hover:text-white transition-colors">
+                <X className="w-4 h-4" />
+              </button>
             </div>
+            <div className="space-y-3">
+              {/* Font size */}
+              <div>
+                <p className="text-xs font-medium text-zinc-500 mb-2">Font Size: <span className="text-white">{fontSize}%</span></p>
+                <div className="flex gap-2">
+                  <button onClick={() => setFontSize(Math.max(70, fontSize - 10))}
+                    className="flex-1 px-2 py-1.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/10 transition-all">
+                    <Minus className="w-3 h-3 mx-auto" />
+                  </button>
+                  <button onClick={() => setFontSize(100)}
+                    className="flex-1 px-2 py-1.5 bg-white/5 border border-white/10 rounded-xl text-xs text-zinc-400 hover:text-white hover:bg-white/10 transition-all flex items-center justify-center gap-1">
+                    <RotateCcw className="w-3 h-3" /> Reset
+                  </button>
+                  <button onClick={() => setFontSize(Math.min(150, fontSize + 10))}
+                    className="flex-1 px-2 py-1.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-zinc-400 hover:text-white hover:bg-white/10 transition-all">
+                    <Plus className="w-3 h-3 mx-auto" />
+                  </button>
+                </div>
+              </div>
 
-            {/* High contrast */}
-            <button
-              onClick={() => setHighContrast(!highContrast)}
-              className={`w-full py-2 rounded-xl text-xs font-bold transition ${
-                highContrast ? 'bg-yellow-300 text-black' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {highContrast ? '✓ High Contrast On' : '🌗 High Contrast'}
-            </button>
+              {/* High contrast */}
+              <button onClick={() => setHighContrast(!highContrast)}
+                className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all border ${
+                  highContrast
+                    ? 'bg-amber-500/20 text-amber-400 border-amber-500/20'
+                    : 'bg-white/5 text-zinc-400 border-white/10 hover:text-white hover:bg-white/10'
+                }`}>
+                {highContrast ? '✓ High Contrast On' : '🌗 High Contrast'}
+              </button>
 
-            {/* Text to speech */}
-            <button
-              onClick={readPage}
-              className={`w-full py-2 rounded-xl text-xs font-bold transition ${
-                speaking ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {speaking ? '⏹ Stop Reading' : '🔊 Read Page Aloud'}
-            </button>
+              {/* Text to speech */}
+              <button onClick={readPage}
+                className={`w-full py-2.5 rounded-xl text-xs font-bold transition-all border flex items-center justify-center gap-2 ${
+                  speaking
+                    ? 'bg-rose-500/20 text-rose-400 border-rose-500/20'
+                    : 'bg-white/5 text-zinc-400 border-white/10 hover:text-white hover:bg-white/10'
+                }`}>
+                {speaking ? <><VolumeX className="w-3.5 h-3.5" /> Stop Reading</> : <><Volume2 className="w-3.5 h-3.5" /> Read Page Aloud</>}
+              </button>
+            </div>
           </div>
         </div>
       )}

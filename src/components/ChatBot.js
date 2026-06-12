@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import products from '@/data/products';
+import { Sparkles, RefreshCw, X, Bot } from 'lucide-react';
 
 const QUESTIONS = [
   {
@@ -231,36 +232,43 @@ export default function ChatBot({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-20 right-4 z-50 w-[340px] sm:w-[380px]">
-      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col" style={{ maxHeight: '560px' }}>
-        {/* Header */}
-        <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white px-4 py-3 rounded-t-2xl flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🤖</span>
+    <div className="fixed bottom-24 right-6 z-50 w-[360px] sm:w-[400px]">
+      <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#0d0d1a] shadow-2xl shadow-black/40 backdrop-blur-xl flex flex-col"
+        style={{ maxHeight: '600px' }}>
+        
+        {/* Ambient glow */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-violet-500/5 rounded-full blur-3xl pointer-events-none" />
+
+        {/* ── Header ── */}
+        <div className="relative shrink-0 bg-gradient-to-r from-[#14142a] to-[#0d0d1a] border-b border-white/5 px-4 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20 flex items-center justify-center">
+              <Bot className="w-4 h-4 text-amber-400" />
+            </div>
             <div>
-              <p className="font-semibold text-sm">Spree Assistant</p>
-              <p className="text-[10px] text-indigo-200">Online — Ask me anything!</p>
+              <p className="font-semibold text-white text-sm">Spree Assistant</p>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/30" />
+                <p className="text-[10px] text-zinc-500">Online — Ask me anything</p>
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-1">
-            <button onClick={resetChat} className="text-white/70 hover:text-white p-1" title="Reset chat">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
+            <button onClick={resetChat} className="p-1.5 rounded-lg text-zinc-500 hover:text-amber-400 hover:bg-white/5 transition-all" title="Reset chat">
+              <RefreshCw className="w-3.5 h-3.5" />
             </button>
-            <button onClick={onClose} className="text-white/70 hover:text-white p-1">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+            <button onClick={onClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/5 transition-all">
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
 
-        {/* Messages */}
-        <div ref={chatRef} className="overflow-y-auto p-3 space-y-3" style={{ minHeight: '320px', maxHeight: '400px' }}>
+        {/* ── Messages ── */}
+        <div ref={chatRef} className="relative overflow-y-auto p-4 space-y-4" style={{ minHeight: '340px', maxHeight: '400px' }}>
           {messages.length === 0 && !isTyping && (
-            <div className="text-center py-8 text-gray-400 text-xs">
-              <p className="text-2xl mb-2">👋</p>
+            <div className="text-center py-10 text-zinc-500 text-xs">
+              <p className="text-3xl mb-2">👋</p>
               <p>Loading...</p>
             </div>
           )}
@@ -268,19 +276,19 @@ export default function ChatBot({ isOpen, onClose }) {
           {messages.map((msg, i) => (
             <div key={i}>
               <div className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm leading-relaxed ${
+                <div className={`max-w-[88%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                   msg.type === 'user'
-                    ? 'bg-indigo-600 text-white rounded-br-sm'
-                    : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+                    ? 'bg-gradient-to-br from-amber-500/20 to-amber-600/10 border border-amber-500/20 text-amber-100 rounded-tr-sm'
+                    : 'bg-white/5 border border-white/5 text-zinc-300 rounded-tl-sm'
                 }`}>
                   {msg.text}
                 </div>
               </div>
               {msg.options && (
-                <div className="mt-2 space-y-1.5 ml-0.5">
+                <div className="mt-2.5 space-y-1.5 ml-0.5">
                   {msg.options.map((opt, j) => (
                     <button key={j} onClick={() => handleOption(opt)}
-                      className="block w-full text-left text-xs font-medium bg-white hover:bg-indigo-50 border border-gray-200 hover:border-indigo-300 rounded-xl px-3.5 py-2.5 text-gray-700 transition-all duration-150 shadow-sm hover:shadow">
+                      className="block w-full text-left text-xs font-medium bg-white/[0.03] hover:bg-amber-500/10 border border-white/[0.06] hover:border-amber-500/20 rounded-xl px-3.5 py-2.5 text-zinc-400 hover:text-amber-300 transition-all duration-200">
                       {opt.text}
                     </button>
                   ))}
@@ -291,11 +299,11 @@ export default function ChatBot({ isOpen, onClose }) {
 
           {isTyping && (
             <div className="flex justify-start">
-              <div className="bg-gray-100 rounded-xl px-4 py-3">
+              <div className="bg-white/5 border border-white/5 rounded-2xl px-4 py-3.5 rounded-tl-sm">
                 <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="w-2 h-2 bg-zinc-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 bg-zinc-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 bg-zinc-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               </div>
             </div>
@@ -304,18 +312,18 @@ export default function ChatBot({ isOpen, onClose }) {
           <div ref={endRef} />
         </div>
 
-        {/* Quick Actions */}
+        {/* ── Quick Actions ── */}
         {messages.length > 0 && (
-          <div className="border-t border-gray-100 px-3 py-2 shrink-0">
-            <div className="flex gap-1.5 overflow-x-auto pb-0.5">
+          <div className="relative shrink-0 border-t border-white/[0.04] px-3 py-2.5">
+            <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-thin">
               {QUICK_ACTIONS.map((action, i) => (
                 <button key={i} onClick={() => handleOption(action)}
-                  className="text-[10px] font-medium bg-gray-50 hover:bg-indigo-50 border border-gray-200 hover:border-indigo-200 rounded-full px-3 py-1.5 text-gray-600 whitespace-nowrap transition shrink-0">
+                  className="text-[10px] font-medium bg-white/[0.03] hover:bg-amber-500/10 border border-white/[0.06] hover:border-amber-500/20 rounded-full px-3.5 py-1.5 text-zinc-500 hover:text-amber-300 whitespace-nowrap transition shrink-0">
                   {action.text}
                 </button>
               ))}
               <button onClick={resetChat}
-                className="text-[10px] font-medium bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-full px-3 py-1.5 text-gray-400 whitespace-nowrap transition shrink-0">
+                className="text-[10px] font-medium bg-white/[0.03] hover:bg-white/5 border border-white/[0.06] rounded-full px-3.5 py-1.5 text-zinc-600 whitespace-nowrap transition shrink-0">
                 ↺ Reset
               </button>
             </div>
