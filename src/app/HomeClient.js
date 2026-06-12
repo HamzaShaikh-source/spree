@@ -31,7 +31,7 @@ export default function HomePage() {
       {/* ═══════════════════════════════════════════
            HERO — Animated Gradient Orbs + Premium Hero
            ═══════════════════════════════════════════ */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#08080f]">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-theme-primary">
         {/* Animated orbs */}
         <div className="orb orb-1" />
         <div className="orb orb-2" />
@@ -111,7 +111,8 @@ export default function HomePage() {
                       className="w-full h-full object-contain drop-shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-2xl" />
                   </div>
                   {/* Hover info */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#08080f]/90 via-[#08080f]/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-4">
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-end p-4"
+                    style={{background: 'linear-gradient(to top, var(--bg-overlay-heavy), color-mix(in srgb, var(--bg-overlay) 30%, transparent), transparent)'}}>
                     <div>
                       <p className="text-white text-sm font-semibold line-clamp-1">{p.name}</p>
                       <p className="text-amber-400 text-sm font-bold mt-0.5">{formatPrice(p.price)}</p>
@@ -124,7 +125,7 @@ export default function HomePage() {
         </div>
 
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#08080f] to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-32" style={{background: 'linear-gradient(to top, var(--bg-primary), transparent)'}} />
       </section>
 
       {/* ═══════════════════════════════════════════

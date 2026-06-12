@@ -49,7 +49,8 @@ export default function ProductCard({ product, priority = false }) {
           )}
 
           {/* Quick view overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#08080f]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-center justify-center">
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-400 flex items-center justify-center"
+            style={{background: 'linear-gradient(to top, var(--bg-overlay-soft), transparent, transparent)'}}>
             <span className="flex items-center gap-1.5 text-xs text-white/80 bg-white/10 backdrop-blur-md border border-white/10 rounded-xl px-4 py-2 hover:bg-white/20 transition-all">
               <Eye className="w-3.5 h-3.5" /> Quick View
             </span>
@@ -57,7 +58,8 @@ export default function ProductCard({ product, priority = false }) {
 
           {/* Out of stock */}
           {!product.inStock && (
-            <div className="absolute inset-0 bg-[#08080f]/70 flex items-center justify-center backdrop-blur-sm z-10">
+            <div className="absolute inset-0 flex items-center justify-center backdrop-blur-sm z-10"
+              style={{background: 'color-mix(in srgb, var(--bg-primary) 70%, transparent)'}}>
               <span className="bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-bold px-5 py-2 rounded-full">Out of Stock</span>
             </div>
           )}

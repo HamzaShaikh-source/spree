@@ -28,7 +28,7 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-[#08080f] flex items-center justify-center">
+      <div className="min-h-screen bg-theme-primary flex items-center justify-center">
         <div className="text-center max-w-md mx-auto px-4">
           <p className="text-6xl mb-5">😕</p>
           <h1 className="text-2xl font-bold text-white font-display mb-2">Product not found</h1>
@@ -59,7 +59,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#08080f]">
+    <div className="min-h-screen bg-theme-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 text-xs text-zinc-600 mb-8 flex-wrap">

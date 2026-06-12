@@ -7,10 +7,12 @@ import { useLanguage } from '@/context/LanguageContext';
 import LoginModal from './LoginModal';
 import SearchSuggestions from './SearchSuggestions';
 import { supabase } from '@/lib/supabase';
-import { Search, ShoppingCart, User, Mic, ChevronDown, Menu, X, Sparkles } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
+import { Search, ShoppingCart, User, Mic, ChevronDown, Menu, X, Sun, Moon } from 'lucide-react';
 
 export default function Header() {
   const { t, lang, changeLang, LANGUAGES } = useLanguage();
+  const { theme, toggleTheme, mounted } = useTheme();
   const [cartCount, setCartCount] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -88,7 +90,7 @@ export default function Header() {
     <>
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? 'bg-[#08080f]/80 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20' 
+          ? 'bg-theme-header backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20' 
           : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,7 +131,7 @@ export default function Header() {
                 <button className="px-3 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors duration-200 rounded-lg hover:bg-white/5 flex items-center gap-1">
                   Shop <ChevronDown className="w-3.5 h-3.5" />
                 </button>
-                <div className="absolute top-full left-0 mt-1.5 bg-[#111120] border border-white/10 rounded-xl shadow-2xl shadow-black/40 py-2 min-w-[220px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 backdrop-blur-xl">
+                <div className="absolute top-full left-0 mt-1.5 bg-theme-dropdown border border-white/10 rounded-xl shadow-2xl shadow-black/40 py-2 min-w-[220px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 backdrop-blur-xl">
                   {categories.map(cat => (
                     <a key={cat} href={`/products?category=${encodeURIComponent(cat)}`}
                       className="block px-4 py-2.5 text-sm text-zinc-400 hover:text-amber-400 hover:bg-white/5 transition-colors duration-200">{cat}</a>
@@ -153,7 +155,7 @@ export default function Header() {
                   {lang.toUpperCase()} <ChevronDown className="w-3 h-3" />
                 </button>
                 {langOpen && (
-                  <div className="absolute right-0 top-full mt-1 bg-[#111120] border border-white/10 rounded-xl shadow-2xl shadow-black/40 py-1 min-w-[130px] z-50 backdrop-blur-xl">
+                  <div className="absolute right-0 top-full mt-1 bg-theme-dropdown border border-white/10 rounded-xl shadow-2xl shadow-black/40 py-1 min-w-[130px] z-50 backdrop-blur-xl">
                     {LANGUAGES.map(l => (
                       <button key={l.code} onClick={() => { changeLang(l.code); setLangOpen(false); }}
                         className={`block w-full text-left px-3.5 py-2 text-sm transition-colors duration-200 ${
@@ -163,6 +165,13 @@ export default function Header() {
                   </div>
                 )}
               </div>
+
+              {/* Theme Toggle */}
+              {mounted && (
+                <button onClick={toggleTheme} className="theme-toggle-btn" title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
+                  {theme === 'dark' ? <Sun /> : <Moon />}
+                </button>
+              )}
 
               {/* Social - subtle only */}
               <a href="https://github.com/HamzaShaikh-source" target="_blank" rel="noopener noreferrer" className="hidden sm:block p-2 text-zinc-500 hover:text-amber-400 transition-colors duration-200 rounded-lg hover:bg-white/5">

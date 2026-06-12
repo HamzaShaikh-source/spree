@@ -133,7 +133,7 @@ export default function LoginModal({ isOpen, onClose }) {
 
             <div className="relative mb-4">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/5" /></div>
-              <div className="relative flex justify-center text-xs"><span className="bg-[#111120] px-2 text-zinc-600">or continue with email</span></div>
+              <div className="relative flex justify-center text-xs"><span className="bg-theme-dropdown px-2 text-zinc-600">or continue with email</span></div>
             </div>
 
             <form onSubmit={handleAuth} className="space-y-3">

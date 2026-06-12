@@ -102,7 +102,7 @@ export default function ProductsPage() {
   }, [loaded]);
 
   if (!loaded) return (
-    <div className="min-h-screen flex items-center justify-center bg-[#08080f]">
+    <div className="min-h-screen flex items-center justify-center bg-theme-primary">
       <div className="space-y-4 text-center">
         <div className="w-8 h-8 border-2 border-amber-500/30 border-t-amber-500 rounded-full animate-spin mx-auto" />
         <p className="text-zinc-500 text-sm">Loading products...</p>
@@ -111,7 +111,7 @@ export default function ProductsPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#08080f]">
+    <div className="min-h-screen bg-theme-primary">
       {/* Top bar */}
       <div className="border-b border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
